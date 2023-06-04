@@ -1,0 +1,5 @@
+{
+  "displayName": "Test policies",
+  "description": "Set of policies for the package test",
+  "rawPolicy": "package test\n\ndefault allow := true"
+}

@@ -1,0 +1,6 @@
+{
+  "name": "dp-demo",
+  "config": "cnfg",
+  "type": "aws-bucket",
+  "template": "tmplt"
+}

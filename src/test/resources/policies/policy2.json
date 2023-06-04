@@ -1,0 +1,5 @@
+{
+  "displayName": "Xpolicy policies",
+  "description": "Set of policies for the package xpolicy",
+  "rawPolicy": "package xpolicy\n\ndefault allow := false\n\nallow := true {\n    startswith(input.name, \"X\")\n    endswith(input.name, \"x\")\n}"
+}

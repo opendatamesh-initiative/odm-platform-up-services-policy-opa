@@ -1,0 +1,29 @@
+package servicestype
+
+default allow := true
+
+servicesTypeEnum := {"rest-services", "streaming-services", "datastore-services"}
+restServices := [ outputPort.promises | outputPort := input.interfaceComponents.outputPorts[_]; outputPort.promises.servicesType == "rest-services" ]
+streamingServices := [ outputPort.promises | outputPort := input.interfaceComponents.outputPorts[_]; outputPort.promises.servicesType == "streaming-services" ]
+datastoreServices := [ outputPort.promises | outputPort := input.interfaceComponents.outputPorts[_]; outputPort.promises.servicesType == "datastore-services" ]
+asyncapiSpecServices := [ promise.api.definition | promise := streamingServices[_]; promise.api.specification == "asyncapi"]
+
+allow := false {
+    count([ outputPort.promises.servicesType | outputPort := input.interfaceComponents.outputPorts[_]; not servicesTypeEnum[outputPort.promises.servicesType] ]) > 0
+}
+
+allow := false {
+	count([ serv | serv := restServices[_]; serv.api.specification != "openapi" ]) > 0
+}
+
+allow := false {
+	count([ serv | serv := streamingServices[_]; serv.api.specification != "asyncapi" ]) > 0
+}
+
+allow := false {
+	count([ serv | serv := datastoreServices[_]; serv.api.specification != "datastoreapi" ]) > 0
+}
+
+allow := false {
+	count([ def | def := asyncapiSpecServices[_]; def.specification != "cloud-events"]) > 0
+}

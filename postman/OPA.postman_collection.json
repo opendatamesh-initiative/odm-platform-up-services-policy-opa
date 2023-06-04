@@ -1,0 +1,223 @@
+{
+	"info": {
+		"_postman_id": "6b24db73-a58c-419d-b1c7-f69e0d603874",
+		"name": "OPA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "policies - dataproduct",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "package dataproduct\r\n\r\ndefault allow := false\r\ndefault warning := false\r\n\r\nallow := true {\r\n    startswith(input.name, \"dp-\")\r\n}\r\n\r\nwarning := true {\r\n    startswith(input.name, \"x\")\r\n}",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8181/v1/policies/:id",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"v1",
+						"policies",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "dataproduct"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "policies - xpolicy",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "package xpolicy\r\n\r\ndefault allow := false\r\n\r\nallow := true {\r\n    startswith(input.name, \"X\")\r\n    endswith(input.name, \"x\")\r\n}",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8181/v1/policies/:id",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"v1",
+						"policies",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "xpolicy"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all policies",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8181/v1/policies",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"v1",
+						"policies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get specific policy",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8181/v1/policies/:id",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"v1",
+						"policies",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "dataproduct"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete specific policy",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8181/v1/policies/:id",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"v1",
+						"policies",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "dataproduct"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"input\":{\r\n     \"name\": \"dp-demo\",\r\n     \"config\": \"https://raw.githubusercontent.com/Giandom/tf-data-product-example/main/example.conf\",\r\n     \"type\": \"aws-bucket\",\r\n     \"template\": \"https://github.com/Giandom/tf-data-product-example.git\"\r\n     }\r\n }"
+				},
+				"url": {
+					"raw": "localhost:8181/v1/data/:id",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"v1",
+						"data",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "dataproduct"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ValidateAll",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"input\":{\r\n     \"name\": \"xdp-demox\",\r\n     \"config\": \"https://raw.githubusercontent.com/Giandom/tf-data-product-example/main/example.conf\",\r\n     \"type\": \"aws-bucket\",\r\n     \"template\": \"https://github.com/Giandom/tf-data-product-example.git\"\r\n     }\r\n }"
+				},
+				"url": {
+					"raw": "localhost:8181/v1/data",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"v1",
+						"data"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

@@ -1,0 +1,7 @@
+package versions
+
+default allow := true
+
+allow := false {
+    count([ outputPort.version | outputPort := input.interfaceComponents.outputPorts[_]; input.info.version < outputPort.version ]) > 0
+}

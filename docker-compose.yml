@@ -1,0 +1,66 @@
+version: '3.3'
+
+services:
+
+  # Postgresql 11 DB
+  PostgreSQL:
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_USER=${DATABASE_USERNAME}
+    image: postgres:11-alpine
+    env_file: .env
+    ports:
+      - "${DATABASE_PORT}:5432"
+    volumes:
+      - postgres:/var/lib/postgresql/${DATABASE_NAME}/data:rw
+    healthcheck:
+      test: [ "CMD", "pg_isready -U postgres" ]
+      interval: 3s
+      timeout: 5s
+      retries: 5
+
+  # OPA Server
+  opa:
+    image: openpolicyagent/opa:latest-rootless
+    env_file: .env
+    ports:
+      - "${OPA_PORT}:8181"
+    command:
+      - "run"
+      - "--server"
+      - "--log-level=${OPA_LOG_LEVEL}"
+      - "--log-format=json-pretty"
+      - "--set=decision_logs.console=true"
+    volumes:
+      - opa:/var/lib/opa/data:rw
+
+  # Spring boot app
+  app:
+    container_name: "${APP_NAME}"
+    depends_on:
+      - opa
+      - PostgreSQL
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SPRING_PROFILES_ACTIVE_BUILD: "dev"
+        SPRING_PROFILES_ACTIVE: "docker"
+        APP_NAME: "policyservice-opa"
+        JAVA_OPTS: ""
+        DATABASE_URL: "jdbc:postgresql://PostgreSQL:5432/${DATABASE_NAME}"
+        DATABASE_USERNAME: "${DATABASE_USERNAME}"
+        DATABASE_PASSWORD: "${DATABASE_PASSWORD}"
+        FLYWAY_SCHEMA: "flyway"
+        FLYWAY_SCRIPTS_DIR: "postgres"
+        SPRING_LOCAL_PORT: "${SPRING_PORT}"
+        OPA_HOSTNAME: "opa"
+        OPA_PORT: "${OPA_PORT}"
+    env_file: .env
+    ports:
+      - "${SPRING_PORT}:${SPRING_PORT}"
+
+volumes:
+  postgres:
+  opa:

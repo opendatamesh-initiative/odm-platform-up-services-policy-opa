@@ -1,0 +1,12 @@
+package dataproduct
+
+default allow := false
+default warning := false
+
+allow := true {
+startswith(input.name, "dp-")
+}
+
+warning := true {
+startswith(input.name, "x")
+}

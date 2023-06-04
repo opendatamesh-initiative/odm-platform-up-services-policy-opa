@@ -1,0 +1,5 @@
+{
+  "displayName": "Versions policy",
+  "description": "Policy for the package version",
+  "rawPolicy": "package versions\n\ndefault allow := true\n\nallow := false {\n    count([ outputPort.version | outputPort := input.interfaceComponents.outputPorts[_]; input.info.version < outputPort.version ]) > 0\n}"
+}

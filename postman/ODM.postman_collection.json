@@ -1,0 +1,448 @@
+{
+	"info": {
+		"_postman_id": "d3607b86-27b8-4f53-9cf4-be85dcad5b92",
+		"name": "ODM - POLICIES",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11752818"
+	},
+	"item": [
+		{
+			"name": "Policies",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"displayName\": \"Dataproduct policies\",\r\n    \"description\": \"Set of policies for the package dataproduct\",\r\n    \"rawPolicy\": \"package dataproduct\\n\\ndefault allow := false\\n\\nallow := true {                                     \\n    startswith(input.name, \\\"dp-\\\")\\n}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4242/api/v1/planes/utility/policy-services/opa/policies/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4242",
+					"path": [
+						"api",
+						"v1",
+						"planes",
+						"utility",
+						"policy-services",
+						"opa",
+						"policies",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "dataproduct"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Policies - dataproduct",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"displayName\": \"Dataproduct policies\",\r\n    \"description\": \"Set of policies for the package dataproduct\",\r\n    \"rawPolicy\": \"package dataproduct\\n\\ndefault allow := false\\n\\nallow := true {                                     \\n    startswith(input.name, \\\"dp-\\\")\\n}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4242/api/v1/planes/utility/policy-services/opa/policies/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4242",
+					"path": [
+						"api",
+						"v1",
+						"planes",
+						"utility",
+						"policy-services",
+						"opa",
+						"policies",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Policies - xpolicy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"displayName\": \"Xpolicy policies\",\r\n    \"description\": \"Set of policies for the package xpolicy\",\r\n    \"rawPolicy\": \"package xpolicy\\n\\ndefault allow := false\\n\\nallow := true {\\n    startswith(input.name, \\\"X\\\")\\n    endswith(input.name, \\\"x\\\")\\n}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4242/api/v1/planes/utility/policy-services/opa/policies/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4242",
+					"path": [
+						"api",
+						"v1",
+						"planes",
+						"utility",
+						"policy-services",
+						"opa",
+						"policies",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all policies",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "package dataproduct\r\n\r\ndefault allow := false\r\n\r\nallow := true {                                     \r\n    startswith(input.name, \"dp-\")\r\n}",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4242/api/v1/planes/utility/policy-services/opa/policies",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4242",
+					"path": [
+						"api",
+						"v1",
+						"planes",
+						"utility",
+						"policy-services",
+						"opa",
+						"policies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete policy by ID",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "package dataproduct\r\n\r\ndefault allow := false\r\n\r\nallow := true {                                     \r\n    startswith(input.name, \"dp-\")\r\n}",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4242/api/v1/planes/utility/policy-services/opa/policies/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4242",
+					"path": [
+						"api",
+						"v1",
+						"planes",
+						"utility",
+						"policy-services",
+						"opa",
+						"policies",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "dataproduct"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate Suites",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"dp-demo\",\r\n    \"config\": \"https://raw.githubusercontent.com/Giandom/tf-data-product-example/main/example.conf\",\r\n    \"type\": \"aws-bucket\",\r\n    \"template\": \"https://github.com/Giandom/tf-data-product-example.git\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4242/api/v1/planes/utility/policy-services/opa/validate?suite=uuu,odm-suite",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4242",
+					"path": [
+						"api",
+						"v1",
+						"planes",
+						"utility",
+						"policy-services",
+						"opa",
+						"validate"
+					],
+					"query": [
+						{
+							"key": "suite",
+							"value": "uuu,odm-suite"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate IDs",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"dp-demo\",\r\n    \"config\": \"https://raw.githubusercontent.com/Giandom/tf-data-product-example/main/example.conf\",\r\n    \"type\": \"aws-bucket\",\r\n    \"template\": \"https://github.com/Giandom/tf-data-product-example.git\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4242/api/v1/planes/utility/policy-services/opa/validate?id=dataproduct,xpolicy",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4242",
+					"path": [
+						"api",
+						"v1",
+						"planes",
+						"utility",
+						"policy-services",
+						"opa",
+						"validate"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "dataproduct,xpolicy"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"dp-demo\",\r\n    \"config\": \"https://raw.githubusercontent.com/Giandom/tf-data-product-example/main/example.conf\",\r\n    \"type\": \"aws-bucket\",\r\n    \"template\": \"https://github.com/Giandom/tf-data-product-example.git\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4242/api/v1/planes/utility/policy-services/opa/validate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4242",
+					"path": [
+						"api",
+						"v1",
+						"planes",
+						"utility",
+						"policy-services",
+						"opa",
+						"validate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Suites",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4242/api/v1/planes/utility/policy-services/opa/suites",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4242",
+					"path": [
+						"api",
+						"v1",
+						"planes",
+						"utility",
+						"policy-services",
+						"opa",
+						"suites"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Suite by ID",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4242/api/v1/planes/utility/policy-services/opa/suites/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4242",
+					"path": [
+						"api",
+						"v1",
+						"planes",
+						"utility",
+						"policy-services",
+						"opa",
+						"suites",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "odm-suite"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Suite",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4242/api/v1/planes/utility/policy-services/opa/suites/:id?mode=ADD&policyId=xpolicy",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4242",
+					"path": [
+						"api",
+						"v1",
+						"planes",
+						"utility",
+						"policy-services",
+						"opa",
+						"suites",
+						":id"
+					],
+					"query": [
+						{
+							"key": "mode",
+							"value": "ADD",
+							"description": "ADD, REMOVE"
+						},
+						{
+							"key": "policyId",
+							"value": "xpolicy"
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "odm-suite"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Suite",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"odm-suite\",\r\n    \"displayName\": \"Suite odm-suite\",\r\n    \"description\": \"Collezione di policies per odm-suite\",\r\n    \"policies\": [\r\n        \"dataproduct\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4242/api/v1/planes/utility/policy-services/opa/suites/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4242",
+					"path": [
+						"api",
+						"v1",
+						"planes",
+						"utility",
+						"policy-services",
+						"opa",
+						"suites",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

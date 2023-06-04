@@ -1,0 +1,61 @@
+{
+  "dataProductDescriptor":"2.0.0",
+  "info":{
+    "fullyQualifiedName": "urn:dpds:it.quantyca:dataproducts:SampleDomain:dp-SampleDP-servicesTypeChecker:1",
+    "entityType": "dataproduct",
+    "name": "dp-SampleDP",
+    "version": "1.0.0",
+    "displayName": "Mock DataProduct ServicesType Checker",
+    "description": "Data Product per controllare policy di validazione di servicesTYpe",
+    "domain": "SampleDomain",
+    "owner": {
+      "id": "john.doe@company-xyz.com",
+      "name": "John Doe"
+    },
+    "contactPoints": [
+      {
+        "name": "Support Team Mail",
+        "description": "The mail address of to the team that give support on this product",
+        "channel": "email",
+        "address": "trip-execution-support@company-xyz.com"
+      },
+      {
+        "name": "Issue Tracker",
+        "description": "The address of the issue tracker associated to this product",
+        "channel": "web",
+        "address": "https://readmine.company-xyz.com/trip-execution"
+      }
+    ]
+  },
+  "interfaceComponents":{
+    "outputPorts":[
+      {
+        "version":"1.0.0",
+        "promises":{
+          "servicesType":"rest-services",
+          "api":{
+            "specification":"openapi"
+          }
+        }
+      },
+      {
+        "version":"1.0.0",
+        "promises":{
+          "servicesType":"datastore-services"
+        }
+      },
+      {
+        "version":"1.0.0",
+        "promises":{
+          "servicesType":"streaming-services",
+          "api":{
+            "specification":"asyncapi",
+            "definition":{
+              "specification":"cloud-events"
+            }
+          }
+        }
+      }
+    ]
+  }
+}

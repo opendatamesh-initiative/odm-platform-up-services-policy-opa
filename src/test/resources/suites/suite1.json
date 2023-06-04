@@ -1,0 +1,9 @@
+{
+  "id": "odm-suite",
+  "displayName": "Suite odm-suite",
+  "description": "Policy collection for odm-suite",
+  "policies": [
+    "dataproduct",
+    "xpolicy"
+  ]
+}
