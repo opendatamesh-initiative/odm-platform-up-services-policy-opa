@@ -48,7 +48,6 @@ services:
       args:
         SPRING_PROFILES_ACTIVE_BUILD: "dev"
         SPRING_PROFILES_ACTIVE: "docker"
-        APP_NAME: "policyservice-opa"
         JAVA_OPTS: ""
         DATABASE_URL: "jdbc:postgresql://PostgreSQL:${DATABASE_PORT}/${DATABASE_NAME}"
         DATABASE_USERNAME: "${DATABASE_USERNAME}"

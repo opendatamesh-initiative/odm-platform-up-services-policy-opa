@@ -3,10 +3,6 @@ FROM maven:3-openjdk-11-slim as build
 
 WORKDIR /workspace/app
 
-COPY pom.xml .
-COPY src src
-COPY scripts/redoc-static-html-gen.sh scripts/redoc-static-html-gen.sh
-
 RUN apt-get update
 RUN apt-get -y install git
 RUN git clone https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-opa.git

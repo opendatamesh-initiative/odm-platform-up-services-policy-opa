@@ -24,7 +24,7 @@ cd odm-plane-utility-policyservice-opa
 Compile the project:
 
 ```bash
-mvn clean install -Dspring-boot.run.arguments="--SPRING_PROFILES_ACTIVE=dev"
+mvn clean install
 ```
 
 ### Run application
