@@ -26,7 +26,7 @@ spring:
             globally_quoted_identifiers: true
             default_schema: PUBLIC
       hibernate:
-         ddl-auto: none #or validate
+         ddl-auto: validate #or none
          show-sql: true
 # Uncomment the following properties if the first time you want to create and populate tables with schema.sql and data.sql
 #spring.jpa.hibernate.ddl-auto: none

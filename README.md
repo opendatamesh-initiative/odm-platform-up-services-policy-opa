@@ -62,7 +62,7 @@ Here you can find the following two Dockerfiles:
 If you decide to create the Docker image using the second Dockerfile (i.e. `Dokerfile.local`), you need to first execute the build locally by running the following command:
 
 ```bash
-mvn clean install -Dspring-boot.run.arguments="--SPRING_PROFILES_ACTIVE=dev"
+mvn clean install
 ```
 
 ### Run OPA server
@@ -71,6 +71,7 @@ The image generated from both Dockerfiles contains only the application. It requ
 ```bash
 docker run --name odmopa-opa-server -d -p 8181:8181  \
    openpolicyagent/opa:latest-rootless \
+   run \
    --server \
    --log-level=debug  \
    --log-format=json-pretty \
