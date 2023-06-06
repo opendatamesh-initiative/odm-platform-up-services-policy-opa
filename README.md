@@ -24,7 +24,7 @@ cd odm-plane-utility-policyservice-opa
 Compile the project:
 
 ```bash
-mvn clean install -Dspring-boot.run.arguments="--SPRING_PROFILES_ACTIVE=dev"
+mvn clean install
 ```
 
 ### Run application
@@ -190,7 +190,7 @@ cd odm-plane-utility-policyservice-opa
 ```
 
 ### Build image
-Build the docker-compose images of the application, a default OPA server and a default PostgreSQL DB.
+Build the docker-compose images of the application, a default OPA server and a default PostgreSQL DB (v11.0).
 
 Before building it, create a `.env` file in the root directory of the project similar to the following one:
 ```.dotenv
