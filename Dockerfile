@@ -7,32 +7,17 @@ COPY pom.xml .
 COPY src src
 COPY scripts/redoc-static-html-gen.sh scripts/redoc-static-html-gen.sh
 
-ARG SPRING_PROFILES_ACTIVE_BUILD=dev
-ARG DATABASE_URL
-ARG DATABASE_USERNAME
-ARG DATABASE_PASSWORD
-ARG FLYWAY_SCHEMA=flyway
-ARG FLYWAY_SCRIPTS_DIR=postgres
-ARG OPA_HOSTNAME
-ARG OPA_PORT
-ARG SPRING_PORT=4242
-ENV SPRING_PROFILES_ACTIVE ${SPRING_PROFILES_ACTIVE_BUILD}
-ENV SPRING_PROFILES_ACTIVE_BUILD ${SPRING_PROFILES_ACTIVE_BUILD}
-ENV DATABASE_URL ${DATABASE_URL}
-ENV DATABASE_USERNAME ${DATABASE_USERNAME}
-ENV DATABASE_PASSWORD ${DATABASE_PASSWORD}
-ENV FLYWAY_SCHEMA ${FLYWAY_SCHEMA}
-ENV FLYWAY_SCRIPTS_DIR ${FLYWAY_SCRIPTS_DIR}
-ENV OPA_HOSTNAME ${OPA_HOSTNAME}
-ENV OPA_LOCAL_PORT ${OPA_PORT}
-ENV SPRING_LOCAL_PORT ${SPRING_PORT}
+RUN apt-get update
+RUN apt-get -y install git
+RUN git clone https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-opa.git
 
-RUN mvn clean install -DskipTests -Dactive.profile=$SPRING_PROFILES_ACTIVE_BUILD
+WORKDIR /workspace/app/odm-platform-up-services-policy-opa
+
+RUN mvn clean install -DskipTests
 
 # Stage 2
 FROM openjdk:11-jre-slim
 
-ARG APP_NAME=policyservice-opa
 ARG SPRING_PROFILES_ACTIVE=docker
 ARG JAVA_OPTS
 ARG DATABASE_URL
@@ -40,10 +25,9 @@ ARG DATABASE_USERNAME
 ARG DATABASE_PASSWORD
 ARG FLYWAY_SCHEMA=flyway
 ARG FLYWAY_SCRIPTS_DIR=postgres
-ARG OPA_HOSTNAME
-ARG OPA_PORT
+ARG OPA_HOSTNAME=localhost
+ARG OPA_PORT=8181
 ARG SPRING_PORT=4242
-ENV APP_NAME ${APP_NAME}
 ENV SPRING_PROFILES_ACTIVE ${SPRING_PROFILES_ACTIVE}
 ENV JAVA_OPTS ${JAVA_OPTS}
 ENV DATABASE_URL ${DATABASE_URL}
@@ -55,10 +39,10 @@ ENV OPA_HOSTNAME ${OPA_HOSTNAME}
 ENV OPA_LOCAL_PORT ${OPA_PORT}
 ENV SPRING_LOCAL_PORT ${SPRING_PORT}
 
-COPY --from=build  /workspace/app/target/$APP_NAME-*.jar /app/
+COPY --from=build  /workspace/app/odm-platform-up-services-policy-opa/target/policyservice-opa-*.jar /app/
 
 RUN ln -s -f /usr/share/zoneinfo/Europe/Rome /etc/localtime
 
-CMD java $JAVA_OPTS -jar /app/$APP_NAME-*.jar --spring.profiles.active=$SPRING_PROFILES_ACTIVE
+CMD java $JAVA_OPTS -jar /app/policyservice-opa-*.jar --spring.profiles.active=$SPRING_PROFILES_ACTIVE
 
 EXPOSE $SPRING_PORT
