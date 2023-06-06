@@ -7,6 +7,12 @@ COPY pom.xml .
 COPY src src
 COPY scripts/redoc-static-html-gen.sh scripts/redoc-static-html-gen.sh
 
+RUN apt-get update
+RUN apt-get -y install git
+RUN git clone https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-opa.git
+
+WORKDIR /workspace/app/odm-platform-up-services-policy-opa
+
 RUN mvn clean install -DskipTests
 
 # Stage 2
@@ -20,7 +26,7 @@ ARG DATABASE_PASSWORD
 ARG FLYWAY_SCHEMA=flyway
 ARG FLYWAY_SCRIPTS_DIR=postgres
 ARG OPA_HOSTNAME=localhost
-ARG OPA_PORT=8081
+ARG OPA_PORT=8181
 ARG SPRING_PORT=4242
 ENV SPRING_PROFILES_ACTIVE ${SPRING_PROFILES_ACTIVE}
 ENV JAVA_OPTS ${JAVA_OPTS}
@@ -33,7 +39,7 @@ ENV OPA_HOSTNAME ${OPA_HOSTNAME}
 ENV OPA_LOCAL_PORT ${OPA_PORT}
 ENV SPRING_LOCAL_PORT ${SPRING_PORT}
 
-COPY --from=build  /workspace/app/target/policyservice-opa-*.jar /app/
+COPY --from=build  /workspace/app/odm-platform-up-services-policy-opa/target/policyservice-opa-*.jar /app/
 
 RUN ln -s -f /usr/share/zoneinfo/Europe/Rome /etc/localtime
 
