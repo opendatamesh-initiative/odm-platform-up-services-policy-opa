@@ -24,14 +24,14 @@ cd odm-plane-utility-policyservice-opa
 Compile the project:
 
 ```bash
-mvn clean install -Dspring-boot.run.arguments="--SPRING_PROFILES_ACTIVE=dev"
+mvn clean install"
 ```
 
 ### Run application
 Run the application:
 
 ```bash
-java -jar target/policyservice-opa.0.0.1-SNAPSHOT.jar
+java -jar target/policyservice-opa-0.0.1-SNAPSHOT.jar
 ```
 
 ### Stop application
@@ -71,7 +71,7 @@ The image generated from both Dockerfiles contains only the application. It requ
 ```bash
 docker run --name odmopa-opa-server -d -p 8181:8181  \
    openpolicyagent/opa:latest-rootless \
-   --server \
+   run --server \
    --log-level=debug  \
    --log-format=json-pretty \
    --set=decision_logs.console=true
@@ -238,6 +238,12 @@ docker-compose build --no-cache
 You can invoke REST endpoints through *OpenAPI UI* available at the following url:
 
 * [http://localhost:4242/api/v1/planes/utility/policy-services/opa/swagger-ui/index.html](http://localhost:4242/api/v1/planes/utility/policy-services/opa/swagger-ui/index.html)
+
+## OPA server
+
+You can access to OPA Server browsing tho the following page:
+
+* [http://localhost:8181/](http://localhost:8181/)
 
 ## Database
 
