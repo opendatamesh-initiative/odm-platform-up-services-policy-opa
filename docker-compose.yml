@@ -8,10 +8,11 @@ services:
       - POSTGRES_DB=${DATABASE_NAME}
       - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
       - POSTGRES_USER=${DATABASE_USERNAME}
+      - PGPORT=${DATABASE_PORT}
     image: postgres:11-alpine
     env_file: .env
     ports:
-      - "${DATABASE_PORT}:5432"
+      - "${DATABASE_PORT}:${DATABASE_PORT}"
     volumes:
       - postgres:/var/lib/postgresql/${DATABASE_NAME}/data:rw
     healthcheck:
@@ -25,7 +26,7 @@ services:
     image: openpolicyagent/opa:latest-rootless
     env_file: .env
     ports:
-      - "${OPA_PORT}:8181"
+      - "${OPA_PORT}:${OPA_PORT}"
     command:
       - "run"
       - "--server"
@@ -45,11 +46,9 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        SPRING_PROFILES_ACTIVE_BUILD: "dev"
         SPRING_PROFILES_ACTIVE: "docker"
-        APP_NAME: "policyservice-opa"
         JAVA_OPTS: ""
-        DATABASE_URL: "jdbc:postgresql://PostgreSQL:5432/${DATABASE_NAME}"
+        DATABASE_URL: "jdbc:postgresql://PostgreSQL:${DATABASE_PORT}/${DATABASE_NAME}"
         DATABASE_USERNAME: "${DATABASE_USERNAME}"
         DATABASE_PASSWORD: "${DATABASE_PASSWORD}"
         FLYWAY_SCHEMA: "flyway"

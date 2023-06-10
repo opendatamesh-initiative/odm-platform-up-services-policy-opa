@@ -24,7 +24,7 @@ cd odm-plane-utility-policyservice-opa
 Compile the project:
 
 ```bash
-mvn clean install"
+mvn clean install
 ```
 
 ### Run application
@@ -62,7 +62,7 @@ Here you can find the following two Dockerfiles:
 If you decide to create the Docker image using the second Dockerfile (i.e. `Dokerfile.local`), you need to first execute the build locally by running the following command:
 
 ```bash
-mvn clean install -Dspring-boot.run.arguments="--SPRING_PROFILES_ACTIVE=dev"
+mvn clean install
 ```
 
 ### Run OPA server
@@ -71,7 +71,8 @@ The image generated from both Dockerfiles contains only the application. It requ
 ```bash
 docker run --name odmopa-opa-server -d -p 8181:8181  \
    openpolicyagent/opa:latest-rootless \
-   run --server \
+   run \
+   --server \
    --log-level=debug  \
    --log-format=json-pretty \
    --set=decision_logs.console=true
@@ -189,7 +190,7 @@ cd odm-plane-utility-policyservice-opa
 ```
 
 ### Build image
-Build the docker-compose images of the application, a default OPA server and a default PostgreSQL DB.
+Build the docker-compose images of the application, a default OPA server and a default PostgreSQL DB (v11.0).
 
 Before building it, create a `.env` file in the root directory of the project similar to the following one:
 ```.dotenv
