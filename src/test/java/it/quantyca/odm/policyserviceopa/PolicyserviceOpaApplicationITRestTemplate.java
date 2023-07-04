@@ -1,9 +1,9 @@
 package it.quantyca.odm.policyserviceopa;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.quantyca.odm.policyserviceopa.resources.v1.dto.PolicyDTO;
-import it.quantyca.odm.policyserviceopa.resources.v1.dto.SuiteDTO;
-import it.quantyca.odm.policyserviceopa.resources.v1.dto.ValidateResponse;
+import org.opendatamesh.platform.up.policy.api.v1.resources.PolicyResource;
+import org.opendatamesh.platform.up.policy.api.v1.resources.SuiteResource;
+import org.opendatamesh.platform.up.policy.api.v1.resources.ValidateResponse;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 
@@ -52,10 +52,10 @@ public class PolicyserviceOpaApplicationITRestTemplate extends TestRestTemplate 
         return Files.readString(Paths.get(path));
     }
 
-    HttpEntity<PolicyDTO> getPolicyFileAsHttpEntity(String file) throws IOException {
+    HttpEntity<PolicyResource> getPolicyFileAsHttpEntity(String file) throws IOException {
 
-        HttpEntity<PolicyDTO> entity = null;
-        PolicyDTO policyDTO = null;
+        HttpEntity<PolicyResource> entity = null;
+        PolicyResource policyResource = null;
 
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -63,18 +63,18 @@ public class PolicyserviceOpaApplicationITRestTemplate extends TestRestTemplate 
 
         if (file != null) {
             String docContet = readFile(file);
-            policyDTO = objectMapper.readValue(docContet, PolicyDTO.class);
+            policyResource = objectMapper.readValue(docContet, PolicyResource.class);
         }
 
-        entity = new HttpEntity<>(policyDTO, headers);
+        entity = new HttpEntity<>(policyResource, headers);
 
         return entity;
     }
 
-    HttpEntity<SuiteDTO> getSuiteFileAsHttpEntity(String file) throws IOException {
+    HttpEntity<SuiteResource> getSuiteFileAsHttpEntity(String file) throws IOException {
 
-        HttpEntity<SuiteDTO> entity = null;
-        SuiteDTO suiteDTO = null;
+        HttpEntity<SuiteResource> entity = null;
+        SuiteResource suiteResource = null;
 
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -82,10 +82,10 @@ public class PolicyserviceOpaApplicationITRestTemplate extends TestRestTemplate 
 
         if (file != null) {
             String docContet = readFile(file);
-            suiteDTO = objectMapper.readValue(docContet, SuiteDTO.class);
+            suiteResource = objectMapper.readValue(docContet, SuiteResource.class);
         }
 
-        entity = new HttpEntity<>(suiteDTO, headers);
+        entity = new HttpEntity<>(suiteResource, headers);
 
         return entity;
     }
@@ -117,29 +117,29 @@ public class PolicyserviceOpaApplicationITRestTemplate extends TestRestTemplate 
     // Policy
     // ----------------------------------------
 
-    public ResponseEntity<PolicyDTO> createPolicy(String filePath) throws IOException {
+    public ResponseEntity<PolicyResource> createPolicy(String filePath) throws IOException {
 
-        HttpEntity<PolicyDTO> entity = getPolicyFileAsHttpEntity(filePath);
+        HttpEntity<PolicyResource> entity = getPolicyFileAsHttpEntity(filePath);
 
-        ResponseEntity<PolicyDTO> postPolicyResponse = postForEntity(
+        ResponseEntity<PolicyResource> postPolicyResponse = postForEntity(
                 apiUrl(RoutesV1.POLICY),
                 entity,
-                PolicyDTO.class
+                PolicyResource.class
         );
 
         return postPolicyResponse;
 
     }
 
-    public ResponseEntity<PolicyDTO> updatePolicy(String id, String filePath) throws IOException {
+    public ResponseEntity<PolicyResource> updatePolicy(String id, String filePath) throws IOException {
 
-        HttpEntity<PolicyDTO> entity = getPolicyFileAsHttpEntity(filePath);
+        HttpEntity<PolicyResource> entity = getPolicyFileAsHttpEntity(filePath);
 
-        ResponseEntity<PolicyDTO> putPolicyResponse = exchange(
+        ResponseEntity<PolicyResource> putPolicyResponse = exchange(
                 apiUrlOfItem(RoutesV1.POLICY),
                 HttpMethod.PUT,
                 entity,
-                PolicyDTO.class,
+                PolicyResource.class,
                 id
         );
 
@@ -147,16 +147,16 @@ public class PolicyserviceOpaApplicationITRestTemplate extends TestRestTemplate 
 
     }
 
-    public ResponseEntity<PolicyDTO[]> readAllPolicies() {
+    public ResponseEntity<PolicyResource[]> readAllPolicies() {
         return getForEntity(
                 apiUrl(RoutesV1.POLICY),
-                PolicyDTO[].class);
+                PolicyResource[].class);
     }
 
-    public ResponseEntity<PolicyDTO> readOnePolicy(String id) {
+    public ResponseEntity<PolicyResource> readOnePolicy(String id) {
         return getForEntity(
                 apiUrlOfItem(RoutesV1.POLICY),
-                PolicyDTO.class,
+                PolicyResource.class,
                 id
         );
     }
@@ -176,30 +176,30 @@ public class PolicyserviceOpaApplicationITRestTemplate extends TestRestTemplate 
     // Suite
     // ----------------------------------------
 
-    public ResponseEntity<SuiteDTO> createSuite(String filePath) throws IOException {
+    public ResponseEntity<SuiteResource> createSuite(String filePath) throws IOException {
 
-        HttpEntity<SuiteDTO> entity = getSuiteFileAsHttpEntity(filePath);
+        HttpEntity<SuiteResource> entity = getSuiteFileAsHttpEntity(filePath);
 
-        ResponseEntity<SuiteDTO> postSuiteResponse = postForEntity(
+        ResponseEntity<SuiteResource> postSuiteResponse = postForEntity(
                 apiUrl(RoutesV1.SUITE),
                 entity,
-                SuiteDTO.class
+                SuiteResource.class
         );
 
         return postSuiteResponse;
 
     }
 
-    public ResponseEntity<SuiteDTO[]> readAllSuites() {
+    public ResponseEntity<SuiteResource[]> readAllSuites() {
         return getForEntity(
                 apiUrl(RoutesV1.SUITE),
-                SuiteDTO[].class);
+                SuiteResource[].class);
     }
 
-    public ResponseEntity<SuiteDTO> readOneSuite(String id) {
+    public ResponseEntity<SuiteResource> readOneSuite(String id) {
         return getForEntity(
                 apiUrlOfItem(RoutesV1.SUITE),
-                SuiteDTO.class,
+                SuiteResource.class,
                 id
         );
     }

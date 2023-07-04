@@ -1,7 +1,7 @@
 package it.quantyca.odm.policyserviceopa.rest;
 
 import it.quantyca.odm.policyserviceopa.exceptions.PolicyserviceOpaAPIException;
-import it.quantyca.odm.policyserviceopa.resources.v1.errors.ErrorRes;
+import org.opendatamesh.platform.up.policy.api.v1.resources.ErrorResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,7 +27,13 @@ public class PolicyserviceOpaAPIExceptionHandler extends ResponseEntityException
 		errorLogMessage += e.getCause()!=null?" : " + e.getCause().getMessage():"";
 		logger.error(errorLogMessage);
 		String url = getUrl(request);
-		ErrorRes error = new ErrorRes(e.getStatus().value(), e.getStandardError(), e.getMessage(), url);
+		ErrorResource error = new ErrorResource(
+				e.getStatus().value(),
+				e.getStandardErrorCode(),
+				e.getStandardErrorDescription(),
+				e.getMessage(),
+				url
+		);
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		return handleExceptionInternal(e, error, headers, e.getStatus(), request);
@@ -46,7 +52,7 @@ public class PolicyserviceOpaAPIExceptionHandler extends ResponseEntityException
 			headers.setContentType(MediaType.APPLICATION_JSON);
 			String url = getUrl(request);
 			String message = e.getMessage();
-			body = new ErrorRes(status.value(), "50000", e.getClass().getName(), message, url);
+			body = new ErrorResource(status.value(), "50000", e.getClass().getName(), message, url);
 		}
 		return super.handleExceptionInternal(e, body, headers, status, request);
 	}
@@ -55,13 +61,13 @@ public class PolicyserviceOpaAPIExceptionHandler extends ResponseEntityException
 	protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
 		List<ObjectError> errors = ex.getAllErrors();
 		String message = String.format("Errors: %s", errors.stream().map(Objects::toString).collect(Collectors.joining("; ")));
-		ErrorRes errorRes = new ErrorRes(
+		ErrorResource errorResource = new ErrorResource(
 				status.value(),
 				"50000",
 				"Bind Exception",
 				message,
 				getUrl(request));
-		return handleExceptionInternal(ex, errorRes, headers, status, request);
+		return handleExceptionInternal(ex, errorResource, headers, status, request);
 	}
 	private String getUrl(WebRequest request) {
 		String url = request.toString();

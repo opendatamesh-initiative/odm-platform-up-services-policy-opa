@@ -1,6 +1,7 @@
 package it.quantyca.odm.policyserviceopa.exceptions;
 
 import org.springframework.http.HttpStatus;
+import org.opendatamesh.platform.up.policy.api.v1.errors.PolicyserviceOpaAPIStandardError;
 
 public class BadRequestException extends PolicyserviceOpaAPIException {
 

@@ -1,15 +1,15 @@
 package it.quantyca.odm.policyserviceopa.resources.v1.mappers;
 
 import it.quantyca.odm.policyserviceopa.entities.PolicyEntity;
-import it.quantyca.odm.policyserviceopa.resources.v1.dto.PolicyDTO;
 import org.mapstruct.Mapper;
+import org.opendatamesh.platform.up.policy.api.v1.resources.PolicyResource;
 
 @Mapper(componentModel = "spring")
 public interface PolicyMapper {
 
-    PolicyDTO policyToPolicyDto(PolicyEntity policy);
-    PolicyEntity policyDTOToPolicy(PolicyDTO policy);
-    Iterable<PolicyEntity> policyDTOIterableToPolicyIterable(Iterable<PolicyDTO> policies);
-    Iterable<PolicyDTO> policyIterableToPolicyDTOIterable(Iterable<PolicyEntity> policies);
+    PolicyResource policyToPolicyDto(PolicyEntity policy);
+    PolicyEntity policyDTOToPolicy(PolicyResource policy);
+    Iterable<PolicyEntity> policyDTOIterableToPolicyIterable(Iterable<PolicyResource> policies);
+    Iterable<PolicyResource> policyIterableToPolicyDTOIterable(Iterable<PolicyEntity> policies);
     
 }

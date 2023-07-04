@@ -1,5 +1,6 @@
 package it.quantyca.odm.policyserviceopa.exceptions;
 
+import org.opendatamesh.platform.up.policy.api.v1.errors.PolicyserviceOpaAPIStandardError;
 import org.springframework.http.HttpStatus;
 
 /**

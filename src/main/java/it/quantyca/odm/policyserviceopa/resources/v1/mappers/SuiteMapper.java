@@ -1,15 +1,15 @@
 package it.quantyca.odm.policyserviceopa.resources.v1.mappers;
 
 import it.quantyca.odm.policyserviceopa.entities.SuiteEntity;
-import it.quantyca.odm.policyserviceopa.resources.v1.dto.SuiteDTO;
 import org.mapstruct.Mapper;
+import org.opendatamesh.platform.up.policy.api.v1.resources.SuiteResource;
 
 @Mapper(componentModel = "spring")
 public interface  SuiteMapper {
 
-    SuiteDTO suiteToSuiteDto(SuiteEntity suite);
-    SuiteEntity suiteDTOToSuite(SuiteDTO suite);
-    Iterable<SuiteEntity> suiteDTOIterableToSuiteIterable(Iterable<SuiteDTO> suites);
-    Iterable<SuiteDTO> suiteIterableToSuiteDTOIterable(Iterable<SuiteEntity> suites);
+    SuiteResource suiteToSuiteDto(SuiteEntity suite);
+    SuiteEntity suiteDTOToSuite(SuiteResource suite);
+    Iterable<SuiteEntity> suiteDTOIterableToSuiteIterable(Iterable<SuiteResource> suites);
+    Iterable<SuiteResource> suiteIterableToSuiteDTOIterable(Iterable<SuiteEntity> suites);
 
 }

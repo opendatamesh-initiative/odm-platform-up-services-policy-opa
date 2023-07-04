@@ -1,7 +1,7 @@
 package it.quantyca.odm.policyserviceopa.services;
 
 import it.quantyca.odm.policyserviceopa.exceptions.BadRequestException;
-import it.quantyca.odm.policyserviceopa.exceptions.PolicyserviceOpaAPIStandardError;
+import org.opendatamesh.platform.up.policy.api.v1.errors.PolicyserviceOpaAPIStandardError;
 import it.quantyca.odm.policyserviceopa.exceptions.UnprocessableEntityException;
 import org.springframework.stereotype.Service;
 
