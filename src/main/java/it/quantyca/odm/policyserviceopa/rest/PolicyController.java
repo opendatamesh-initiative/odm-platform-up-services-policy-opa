@@ -13,7 +13,7 @@ import it.quantyca.odm.policyserviceopa.exceptions.InternalServerException;
 import it.quantyca.odm.policyserviceopa.exceptions.NotFoundException;
 import it.quantyca.odm.policyserviceopa.exceptions.PolicyserviceOpaAPIStandardError;
 import it.quantyca.odm.policyserviceopa.repositories.PolicyRepository;
-import it.quantyca.odm.policyserviceopa.resources.v1.dto.PolicyDTO;
+import it.quantyca.odm.policyserviceopa.resources.v1.dto.PolicyResource;
 import it.quantyca.odm.policyserviceopa.resources.v1.errors.ErrorRes;
 import it.quantyca.odm.policyserviceopa.resources.v1.mappers.PolicyMapper;
 import it.quantyca.odm.policyserviceopa.services.OPAPolicyService;
@@ -67,7 +67,7 @@ public class PolicyController {
                     description = "All registered policies",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = PolicyDTO.class)
+                            schema = @Schema(implementation = PolicyResource.class)
                     )
             ),
             @ApiResponse(
@@ -83,7 +83,7 @@ public class PolicyController {
     public ResponseEntity getPolicies(){
 
         Iterable<PolicyEntity> policyEntities = pr.findAll();
-        Iterable<PolicyDTO> policies = pm.policyIterableToPolicyDTOIterable(policyEntities);
+        Iterable<PolicyResource> policies = pm.policyIterableToPolicyDTOIterable(policyEntities);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -104,7 +104,7 @@ public class PolicyController {
                     description = "The registered policy",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = PolicyDTO.class)
+                            schema = @Schema(implementation = PolicyResource.class)
                     )
             ),
             @ApiResponse(
@@ -139,7 +139,7 @@ public class PolicyController {
         }
 
         PolicyEntity policyEntity = pr.findById(id).get();
-        PolicyDTO policy = pm.policyToPolicyDto(policyEntity);
+        PolicyResource policy = pm.policyToPolicyDto(policyEntity);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -160,7 +160,7 @@ public class PolicyController {
                     description = "Policy created",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = PolicyDTO.class)
+                            schema = @Schema(implementation = PolicyResource.class)
                     )
             ),
             @ApiResponse(
@@ -181,7 +181,7 @@ public class PolicyController {
     })
     public ResponseEntity postPolicy(
             @Parameter(description = "JSON description of the policy object")
-            @Valid @RequestBody PolicyDTO policies
+            @Valid @RequestBody PolicyResource policies
     ){
 
         // Extract ID from RawPolicy
@@ -254,7 +254,7 @@ public class PolicyController {
                     description = "Policy updated",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = PolicyDTO.class)
+                            schema = @Schema(implementation = PolicyResource.class)
                     )
             ),
             @ApiResponse(
@@ -283,7 +283,7 @@ public class PolicyController {
             @Parameter(description = "Identifier of the policy")
             @Valid @PathVariable String id,
             @Parameter(description = "JSON description of the policy object to update")
-            @Valid @RequestBody PolicyDTO policies
+            @Valid @RequestBody PolicyResource policies
     ){
 
         // Extract ID from RawPolicy

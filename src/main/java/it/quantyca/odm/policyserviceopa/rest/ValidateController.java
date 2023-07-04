@@ -106,9 +106,9 @@ public class ValidateController {
             else {
                 if (ids != null) {
                     // Valido le singole policy by ID
-                    List<ValidatedPolicyDTO> validatedPolicies = new ArrayList<>();
+                    List<ValidatedPolicyResource> validatedPolicies = new ArrayList<>();
                     for (String id : ids) {
-                        ValidatedPolicyDTO validatedPolicy = new ValidatedPolicyDTO();
+                        ValidatedPolicyResource validatedPolicy = new ValidatedPolicyResource();
                         validatedPolicy.setPolicy(id);
                         validatedPolicy.setValidationResult(opaValidateService.validateByPolicyID(id, validateDocument));
                         validatedPolicies.add(validatedPolicy);
@@ -117,17 +117,17 @@ public class ValidateController {
                 }
                 if (suites != null) {
                     // Valido le suite
-                    List<ValidatedSuiteDTO> validatedSuites = new ArrayList<>();
+                    List<ValidatedSuiteResource> validatedSuites = new ArrayList<>();
                     for (String suite : suites) {
-                        ValidatedSuiteDTO validatedSuite = new ValidatedSuiteDTO();
+                        ValidatedSuiteResource validatedSuite = new ValidatedSuiteResource();
                         validatedSuite.setSuite(suite);
-                        List<ValidatedPolicyDTO> validatedPolicies = new ArrayList<>();
+                        List<ValidatedPolicyResource> validatedPolicies = new ArrayList<>();
                         Optional<SuiteEntity> suiteEntity = suiteRepository.findById(suite);
                         if (suiteEntity.isPresent()){
                             // Se la suite esiste valido ogni policy che contiene
                             List<String> policyIDs = suiteEntity.get().getPolicies();
                             for (String policyID : policyIDs) {
-                                ValidatedPolicyDTO validatedPolicy = new ValidatedPolicyDTO();
+                                ValidatedPolicyResource validatedPolicy = new ValidatedPolicyResource();
                                 validatedPolicy.setPolicy(policyID);
                                 validatedPolicy.setValidationResult(opaValidateService.validateByPolicyID(policyID, validateDocument));
                                 validatedPolicies.add(validatedPolicy);

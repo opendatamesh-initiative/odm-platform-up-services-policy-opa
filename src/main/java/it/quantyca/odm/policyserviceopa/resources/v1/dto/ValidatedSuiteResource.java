@@ -7,10 +7,10 @@ import javax.persistence.ElementCollection;
 import lombok.Data;
 
 @Data
-public class ValidatedSuiteDTO {
+public class ValidatedSuiteResource {
 
   @ElementCollection
-  private List<ValidatedPolicyDTO> validatedPolicies;
+  private List<ValidatedPolicyResource> validatedPolicies;
 
   private String suite;
   

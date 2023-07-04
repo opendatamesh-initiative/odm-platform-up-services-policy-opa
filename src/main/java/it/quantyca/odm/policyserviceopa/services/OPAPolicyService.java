@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import it.quantyca.odm.policyserviceopa.resources.v1.dto.PolicyDTO;
+import it.quantyca.odm.policyserviceopa.resources.v1.dto.PolicyResource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,31 +20,31 @@ public class OPAPolicyService {
     @Autowired
     RestTemplate rt;
 
-    public Iterable<PolicyDTO> getAllOPAPolicies(){
+    public Iterable<PolicyResource> getAllOPAPolicies(){
 
-        List<PolicyDTO> policies = new ArrayList<PolicyDTO>();
+        List<PolicyResource> policies = new ArrayList<PolicyResource>();
         Map<String, Object> opaResponse = rt.getForObject(policiesUrl, Map.class);
         List<Map<String, Object>> result = (List<Map<String, Object>>) opaResponse.get("result");
         for (Map<String, Object> policy : result){
-            PolicyDTO policyDTO = new PolicyDTO();
-            policyDTO.setId((String) policy.get("id"));
-            policyDTO.setRawPolicy((String)policy.get("raw"));
-            policies.add(policyDTO);
+            PolicyResource policyResource = new PolicyResource();
+            policyResource.setId((String) policy.get("id"));
+            policyResource.setRawPolicy((String)policy.get("raw"));
+            policies.add(policyResource);
         }
     
         return policies;
     
     };
 
-    public PolicyDTO getOPAPolicyByID(String id){
+    public PolicyResource getOPAPolicyByID(String id){
 
         Map<String, Object> opaResponse = rt.getForObject(policiesUrl+"/"+id, Map.class);
         Map<String, Object> result = (Map<String, Object>) opaResponse.get("result");
-        PolicyDTO policyDTO = new PolicyDTO();
-        policyDTO.setId((String) result.get("id"));
-        policyDTO.setRawPolicy((String)result.get("raw"));
+        PolicyResource policyResource = new PolicyResource();
+        policyResource.setId((String) result.get("id"));
+        policyResource.setRawPolicy((String)result.get("raw"));
 
-        return policyDTO;
+        return policyResource;
     };
 
     public void putOPAPolicy(String id, String policy){

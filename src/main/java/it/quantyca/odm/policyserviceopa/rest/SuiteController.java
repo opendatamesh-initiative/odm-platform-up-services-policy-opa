@@ -13,7 +13,7 @@ import it.quantyca.odm.policyserviceopa.exceptions.BadRequestException;
 import it.quantyca.odm.policyserviceopa.exceptions.NotFoundException;
 import it.quantyca.odm.policyserviceopa.exceptions.PolicyserviceOpaAPIStandardError;
 import it.quantyca.odm.policyserviceopa.repositories.SuiteRepository;
-import it.quantyca.odm.policyserviceopa.resources.v1.dto.SuiteDTO;
+import it.quantyca.odm.policyserviceopa.resources.v1.dto.SuiteResource;
 import it.quantyca.odm.policyserviceopa.resources.v1.errors.ErrorRes;
 import it.quantyca.odm.policyserviceopa.resources.v1.mappers.SuiteMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +57,7 @@ public class SuiteController {
                     description = "All registered suites",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = SuiteDTO.class)
+                            schema = @Schema(implementation = SuiteResource.class)
                     )
             ),
             @ApiResponse(
@@ -73,7 +73,7 @@ public class SuiteController {
     public ResponseEntity getSuites(){
 
         Iterable<SuiteEntity> suites = sr.findAll();
-        Iterable<SuiteDTO> suitesDTO = sm.suiteIterableToSuiteDTOIterable(suites);
+        Iterable<SuiteResource> suitesDTO = sm.suiteIterableToSuiteDTOIterable(suites);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -94,7 +94,7 @@ public class SuiteController {
                     description = "The registered suite",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = SuiteDTO.class)
+                            schema = @Schema(implementation = SuiteResource.class)
                     )
             ),
             @ApiResponse(
@@ -129,12 +129,12 @@ public class SuiteController {
             );
         }
 
-        SuiteDTO suiteDTO = sm.suiteToSuiteDto(suite.get());
+        SuiteResource suiteResource = sm.suiteToSuiteDto(suite.get());
 
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(suiteDTO);
+                .body(suiteResource);
 
     }
 
@@ -150,7 +150,7 @@ public class SuiteController {
                     description = "Suite created",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = SuiteDTO.class)
+                            schema = @Schema(implementation = SuiteResource.class)
                     )
             ),
             @ApiResponse(
@@ -175,7 +175,7 @@ public class SuiteController {
     })
     public ResponseEntity postSuite(
             @Parameter(description = "JSON description of the suite object")
-            @Valid @RequestBody SuiteDTO suite
+            @Valid @RequestBody SuiteResource suite
     ){
 
         SuiteEntity suiteEntity = sm.suiteDTOToSuite(suite);
@@ -269,7 +269,7 @@ public class SuiteController {
                     description = "Suite patched",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = SuiteDTO.class)
+                            schema = @Schema(implementation = SuiteResource.class)
                     )
             ),
             @ApiResponse(
@@ -319,7 +319,7 @@ public class SuiteController {
         suiteEntity.setPolicies(policyIds);
         sr.save(suiteEntity);
 
-        SuiteDTO suite = sm.suiteToSuiteDto(suiteEntity);
+        SuiteResource suite = sm.suiteToSuiteDto(suiteEntity);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(suite);

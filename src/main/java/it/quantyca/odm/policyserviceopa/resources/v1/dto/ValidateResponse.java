@@ -10,9 +10,9 @@ import lombok.Data;
 public class ValidateResponse {
 
   @ElementCollection
-  private List<ValidatedPolicyDTO> validatedPolicies;
+  private List<ValidatedPolicyResource> validatedPolicies;
 
   @ElementCollection
-  private List<ValidatedSuiteDTO> validatedSuites;
+  private List<ValidatedSuiteResource> validatedSuites;
   
 }

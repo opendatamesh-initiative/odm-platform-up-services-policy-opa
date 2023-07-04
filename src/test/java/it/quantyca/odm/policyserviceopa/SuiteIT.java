@@ -1,7 +1,7 @@
 package it.quantyca.odm.policyserviceopa;
 
 import it.quantyca.odm.policyserviceopa.exceptions.PolicyserviceOpaAPIStandardError;
-import it.quantyca.odm.policyserviceopa.resources.v1.dto.SuiteDTO;
+import it.quantyca.odm.policyserviceopa.resources.v1.dto.SuiteResource;
 import it.quantyca.odm.policyserviceopa.resources.v1.errors.ErrorRes;
 import org.junit.Test;
 import org.springframework.http.HttpEntity;
@@ -31,11 +31,11 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
         cleanState();
 
         // TEST 1: create a Suite with all properties and verify the response
-        SuiteDTO suiteDTO = createSuite1();
-        assertThat(suiteDTO.getId()).isEqualTo("odm-suite");
-        assertThat(suiteDTO.getDisplayName()).isEqualTo("Suite odm-suite");
-        assertThat(suiteDTO.getDescription()).isEqualTo("Suite collection for odm-suite");
-        System.out.println(suiteDTO.getPolicies());
+        SuiteResource suiteResource = createSuite1();
+        assertThat(suiteResource.getId()).isEqualTo("odm-suite");
+        assertThat(suiteResource.getDisplayName()).isEqualTo("Suite odm-suite");
+        assertThat(suiteResource.getDescription()).isEqualTo("Suite collection for odm-suite");
+        System.out.println(suiteResource.getPolicies());
 
     }
 
@@ -45,12 +45,12 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
 
         cleanState();
 
-        SuiteDTO suiteDTO = createSuite1();
+        SuiteResource suiteResource = createSuite1();
         ResponseEntity<ErrorRes> errorResponse = null;
 
         errorResponse = rest.postForEntity(
                 apiUrl(RoutesV1.SUITE),
-                suiteDTO,
+                suiteResource,
                 ErrorRes.class
         );
         verifyResponseError(
@@ -75,23 +75,23 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
 
         // TEST 1: ADD a policy to a suite
 
-        ResponseEntity<SuiteDTO> entity = null;
+        ResponseEntity<SuiteResource> entity = null;
         String extensions = "/odm-suite?mode=ADD&policyId=newpolicy";
 
         entity = rest.exchange(
                 apiUrl(RoutesV1.SUITE, extensions),
                 HttpMethod.PATCH,
                 null,
-                SuiteDTO.class
+                SuiteResource.class
         );
 
-        SuiteDTO suiteDTOUpdated = entity.getBody();
+        SuiteResource suiteResourceUpdated = entity.getBody();
 
-        assertThat(suiteDTOUpdated.getId()).isEqualTo("odm-suite");
-        assertThat(suiteDTOUpdated.getDisplayName()).isEqualTo("Suite odm-suite");
-        assertThat(suiteDTOUpdated.getDescription()).isEqualTo("Policy collection for odm-suite");
-        assertThat(suiteDTOUpdated.getPolicies().size()).isEqualTo(3);
-        assertThat(suiteDTOUpdated.getPolicies().contains("newpolicy")).isTrue();
+        assertThat(suiteResourceUpdated.getId()).isEqualTo("odm-suite");
+        assertThat(suiteResourceUpdated.getDisplayName()).isEqualTo("Suite odm-suite");
+        assertThat(suiteResourceUpdated.getDescription()).isEqualTo("Policy collection for odm-suite");
+        assertThat(suiteResourceUpdated.getPolicies().size()).isEqualTo(3);
+        assertThat(suiteResourceUpdated.getPolicies().contains("newpolicy")).isTrue();
 
         // TEST 2: REMOVE a policy from suite
         extensions = "/odm-suite?mode=REMOVE&policyId=newpolicy";
@@ -100,16 +100,16 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
                 apiUrl(RoutesV1.SUITE, extensions),
                 HttpMethod.PATCH,
                 null,
-                SuiteDTO.class
+                SuiteResource.class
         );
 
-        suiteDTOUpdated = entity.getBody();
+        suiteResourceUpdated = entity.getBody();
 
-        assertThat(suiteDTOUpdated.getId()).isEqualTo("odm-suite");
-        assertThat(suiteDTOUpdated.getDisplayName()).isEqualTo("Suite odm-suite");
-        assertThat(suiteDTOUpdated.getDescription()).isEqualTo("Policy collection for odm-suite");
-        assertThat(suiteDTOUpdated.getPolicies().size()).isEqualTo(2);
-        assertThat(suiteDTOUpdated.getPolicies().contains("newpolicy")).isFalse();
+        assertThat(suiteResourceUpdated.getId()).isEqualTo("odm-suite");
+        assertThat(suiteResourceUpdated.getDisplayName()).isEqualTo("Suite odm-suite");
+        assertThat(suiteResourceUpdated.getDescription()).isEqualTo("Policy collection for odm-suite");
+        assertThat(suiteResourceUpdated.getPolicies().size()).isEqualTo(2);
+        assertThat(suiteResourceUpdated.getPolicies().contains("newpolicy")).isFalse();
 
     }
 
@@ -117,7 +117,7 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void testSuiteUpdateError404() throws IOException {
 
-        HttpEntity<SuiteDTO> entity = null;
+        HttpEntity<SuiteResource> entity = null;
         ResponseEntity<ErrorRes> errorResponse = null;
 
         String extensions = "/not-a-suite?mode=ADD&policyId=newpolicy";
@@ -150,12 +150,12 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
 
         createSuite1();
 
-        ResponseEntity<SuiteDTO[]> getSuiteResponse = rest.readAllSuites();
-        SuiteDTO[] suiteDTOs = getSuiteResponse.getBody();
+        ResponseEntity<SuiteResource[]> getSuiteResponse = rest.readAllSuites();
+        SuiteResource[] suiteResources = getSuiteResponse.getBody();
         verifyResponseEntity(getSuiteResponse, HttpStatus.OK, true);
 
         assertThat(getSuiteResponse.getBody().length).isEqualTo(1);
-        assertThat(suiteDTOs[0].getId()).isEqualTo("odm-suite");
+        assertThat(suiteResources[0].getId()).isEqualTo("odm-suite");
 
     }
 
@@ -167,14 +167,14 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
 
         createSuite1();
 
-        ResponseEntity<SuiteDTO> getSuiteResponse = rest.readOneSuite("odm-suite");
-        SuiteDTO suiteDTO = getSuiteResponse.getBody();
+        ResponseEntity<SuiteResource> getSuiteResponse = rest.readOneSuite("odm-suite");
+        SuiteResource suiteResource = getSuiteResponse.getBody();
         verifyResponseEntity(getSuiteResponse, HttpStatus.OK, true);
 
-        assertThat(suiteDTO.getId()).isEqualTo("odm-suite");
-        assertThat(suiteDTO.getDisplayName()).isEqualTo("Suite odm-suite");
-        assertThat(suiteDTO.getDescription()).isEqualTo("Policy collection for odm-suite");
-        assertThat(suiteDTO.getPolicies().size()).isEqualTo(2);
+        assertThat(suiteResource.getId()).isEqualTo("odm-suite");
+        assertThat(suiteResource.getDisplayName()).isEqualTo("Suite odm-suite");
+        assertThat(suiteResource.getDescription()).isEqualTo("Policy collection for odm-suite");
+        assertThat(suiteResource.getPolicies().size()).isEqualTo(2);
 
     }
 
@@ -209,9 +209,9 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
 
         cleanState();
 
-        SuiteDTO suiteDTO = createSuite1();
+        SuiteResource suiteResource = createSuite1();
 
-        ResponseEntity<Void> getPolicyResponse = rest.deleteSuite(suiteDTO.getId());
+        ResponseEntity<Void> getPolicyResponse = rest.deleteSuite(suiteResource.getId());
         verifyResponseEntity(getPolicyResponse, HttpStatus.OK, false);
 
     }
@@ -246,10 +246,10 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
     // ----------------------------------------
     private void cleanState() {
 
-        ResponseEntity<SuiteDTO[]> suites = rest.readAllSuites();
-        SuiteDTO[] suiteDTOS = suites.getBody();
-        for (SuiteDTO suiteDTO : suiteDTOS) {
-            rest.deleteSuite(suiteDTO.getId());
+        ResponseEntity<SuiteResource[]> suites = rest.readAllSuites();
+        SuiteResource[] suiteResources = suites.getBody();
+        for (SuiteResource suiteResource : suiteResources) {
+            rest.deleteSuite(suiteResource.getId());
         }
 
     }

@@ -1,7 +1,7 @@
 package it.quantyca.odm.policyserviceopa;
 
 import it.quantyca.odm.policyserviceopa.exceptions.PolicyserviceOpaAPIStandardError;
-import it.quantyca.odm.policyserviceopa.resources.v1.dto.PolicyDTO;
+import it.quantyca.odm.policyserviceopa.resources.v1.dto.PolicyResource;
 import it.quantyca.odm.policyserviceopa.resources.v1.errors.ErrorRes;
 import org.junit.Test;
 import org.springframework.http.HttpEntity;
@@ -31,11 +31,11 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
         cleanState();
 
         // Create a Policy with all properties and verify the response
-        PolicyDTO policyDTO = createPolicy1();
-        assertThat(policyDTO.getId()).isEqualTo("dataproduct");
-        assertThat(policyDTO.getDisplayName()).isEqualTo("Dataproduct policies");
-        assertThat(policyDTO.getDescription()).isEqualTo("Set of policies for the package dataproduct");
-        assertThat(policyDTO.getRawPolicy()).isEqualTo("package dataproduct\n\ndefault allow := false\n\nallow := true {                                     \n    startswith(input.name, \"dp-\")\n}");
+        PolicyResource policyResource = createPolicy1();
+        assertThat(policyResource.getId()).isEqualTo("dataproduct");
+        assertThat(policyResource.getDisplayName()).isEqualTo("Dataproduct policies");
+        assertThat(policyResource.getDescription()).isEqualTo("Set of policies for the package dataproduct");
+        assertThat(policyResource.getRawPolicy()).isEqualTo("package dataproduct\n\ndefault allow := false\n\nallow := true {                                     \n    startswith(input.name, \"dp-\")\n}");
 
     }
 
@@ -45,12 +45,12 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
 
         cleanState();
 
-        PolicyDTO policyDTO = createPolicy1();
+        PolicyResource policyResource = createPolicy1();
         ResponseEntity<ErrorRes> errorResponse = null;
 
         errorResponse = rest.postForEntity(
                 apiUrl(RoutesV1.POLICY),
-                policyDTO,
+                policyResource,
                 ErrorRes.class
         );
         verifyResponseError(
@@ -72,12 +72,12 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
         cleanState();
 
         createPolicy1();
-        PolicyDTO policyDTOUpdated = updatePolicy1();
+        PolicyResource policyResourceUpdated = updatePolicy1();
 
-        assertThat(policyDTOUpdated.getId()).isEqualTo("dataproduct");
-        assertThat(policyDTOUpdated.getDisplayName()).isEqualTo("Dataproduct policies - updated");
-        assertThat(policyDTOUpdated.getDescription()).isEqualTo("Set of policies for the package dataproduct - updated");
-        assertThat(policyDTOUpdated.getRawPolicy()).isEqualTo("package dataproduct\n\ndefault allow := false\n\nallow := true {                                     \n    startswith(input.name, \"dp-\")\n}");
+        assertThat(policyResourceUpdated.getId()).isEqualTo("dataproduct");
+        assertThat(policyResourceUpdated.getDisplayName()).isEqualTo("Dataproduct policies - updated");
+        assertThat(policyResourceUpdated.getDescription()).isEqualTo("Set of policies for the package dataproduct - updated");
+        assertThat(policyResourceUpdated.getRawPolicy()).isEqualTo("package dataproduct\n\ndefault allow := false\n\nallow := true {                                     \n    startswith(input.name, \"dp-\")\n}");
 
     }
 
@@ -87,7 +87,7 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
 
         cleanState();
 
-        HttpEntity<PolicyDTO> entity = rest.getPolicyFileAsHttpEntity(POLICY_3);
+        HttpEntity<PolicyResource> entity = rest.getPolicyFileAsHttpEntity(POLICY_3);
         ResponseEntity<ErrorRes> errorResponse = null;
 
         errorResponse = rest.exchange(
@@ -111,7 +111,7 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
 
         cleanState();
 
-        HttpEntity<PolicyDTO> entity = rest.getPolicyFileAsHttpEntity(POLICY_3);
+        HttpEntity<PolicyResource> entity = rest.getPolicyFileAsHttpEntity(POLICY_3);
         ResponseEntity<ErrorRes> errorResponse = null;
 
         errorResponse = rest.exchange(
@@ -141,13 +141,13 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
         createPolicy1();
         createPolicy2();
 
-        ResponseEntity<PolicyDTO[]> getPolicyResponse = rest.readAllPolicies();
-        PolicyDTO[] policyDTOs = getPolicyResponse.getBody();
+        ResponseEntity<PolicyResource[]> getPolicyResponse = rest.readAllPolicies();
+        PolicyResource[] policyResources = getPolicyResponse.getBody();
         verifyResponseEntity(getPolicyResponse, HttpStatus.OK, true);
 
         assertThat(getPolicyResponse.getBody().length).isEqualTo(2);
-        assertThat(policyDTOs[0].getId()).isEqualTo("dataproduct");
-        assertThat(policyDTOs[1].getId()).isEqualTo("xpolicy");
+        assertThat(policyResources[0].getId()).isEqualTo("dataproduct");
+        assertThat(policyResources[1].getId()).isEqualTo("xpolicy");
 
     }
 
@@ -159,11 +159,11 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
 
         createPolicy1();
 
-        ResponseEntity<PolicyDTO> getPolicyResponse = rest.readOnePolicy("dataproduct");
-        PolicyDTO policyDTO = getPolicyResponse.getBody();
+        ResponseEntity<PolicyResource> getPolicyResponse = rest.readOnePolicy("dataproduct");
+        PolicyResource policyResource = getPolicyResponse.getBody();
         verifyResponseEntity(getPolicyResponse, HttpStatus.OK, true);
 
-        assertThat(policyDTO.getId()).isEqualTo("dataproduct");
+        assertThat(policyResource.getId()).isEqualTo("dataproduct");
 
     }
 
@@ -198,7 +198,7 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
 
         cleanState();
 
-        PolicyDTO policy = createPolicy1();
+        PolicyResource policy = createPolicy1();
 
         ResponseEntity<Void> getPolicyResponse = rest.deletePolicy(policy.getId());
         verifyResponseEntity(getPolicyResponse, HttpStatus.OK, false);
@@ -235,10 +235,10 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
     // ----------------------------------------
     private void cleanState() {
 
-        ResponseEntity<PolicyDTO[]> policies = rest.readAllPolicies();
-        PolicyDTO[] policyDTOS = policies.getBody();
-        for (PolicyDTO policyDTO : policyDTOS) {
-            rest.deletePolicy(policyDTO.getId());
+        ResponseEntity<PolicyResource[]> policies = rest.readAllPolicies();
+        PolicyResource[] policyResources = policies.getBody();
+        for (PolicyResource policyResource : policyResources) {
+            rest.deletePolicy(policyResource.getId());
         }
 
     }

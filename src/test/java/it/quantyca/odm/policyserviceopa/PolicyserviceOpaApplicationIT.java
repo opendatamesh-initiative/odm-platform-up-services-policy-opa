@@ -2,8 +2,8 @@ package it.quantyca.odm.policyserviceopa;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.quantyca.odm.policyserviceopa.exceptions.PolicyserviceOpaAPIStandardError;
-import it.quantyca.odm.policyserviceopa.resources.v1.dto.PolicyDTO;
-import it.quantyca.odm.policyserviceopa.resources.v1.dto.SuiteDTO;
+import it.quantyca.odm.policyserviceopa.resources.v1.dto.PolicyResource;
+import it.quantyca.odm.policyserviceopa.resources.v1.dto.SuiteResource;
 import it.quantyca.odm.policyserviceopa.resources.v1.errors.ErrorRes;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,48 +88,48 @@ public abstract class PolicyserviceOpaApplicationIT {
 	// Create test basic resources
 	// ======================================================================================
 
-	protected PolicyDTO createPolicy1() throws IOException {
-		ResponseEntity<PolicyDTO> postPolicyResponse = rest.createPolicy(POLICY_1);
+	protected PolicyResource createPolicy1() throws IOException {
+		ResponseEntity<PolicyResource> postPolicyResponse = rest.createPolicy(POLICY_1);
 		verifyResponseEntity(postPolicyResponse, HttpStatus.CREATED, true);
 
 		return postPolicyResponse.getBody();
 
 	}
 
-	protected PolicyDTO createPolicy2() throws IOException {
-		ResponseEntity<PolicyDTO> postPolicyResponse = rest.createPolicy(POLICY_2);
+	protected PolicyResource createPolicy2() throws IOException {
+		ResponseEntity<PolicyResource> postPolicyResponse = rest.createPolicy(POLICY_2);
 		verifyResponseEntity(postPolicyResponse, HttpStatus.CREATED, true);
 
 		return postPolicyResponse.getBody();
 
 	}
 
-	protected PolicyDTO createPolicyVersions() throws IOException {
-		ResponseEntity<PolicyDTO> postPolicyResponse = rest.createPolicy(POLICY_VERSIONS);
+	protected PolicyResource createPolicyVersions() throws IOException {
+		ResponseEntity<PolicyResource> postPolicyResponse = rest.createPolicy(POLICY_VERSIONS);
 		verifyResponseEntity(postPolicyResponse, HttpStatus.CREATED, true);
 
 		return postPolicyResponse.getBody();
 
 	}
 
-	protected PolicyDTO createPolicyServicesType() throws IOException {
-		ResponseEntity<PolicyDTO> postPolicyResponse = rest.createPolicy(POLICY_SERVICESTYPE);
+	protected PolicyResource createPolicyServicesType() throws IOException {
+		ResponseEntity<PolicyResource> postPolicyResponse = rest.createPolicy(POLICY_SERVICESTYPE);
 		verifyResponseEntity(postPolicyResponse, HttpStatus.CREATED, true);
 
 		return postPolicyResponse.getBody();
 
 	}
 
-	protected PolicyDTO updatePolicy1() throws IOException {
-		ResponseEntity<PolicyDTO> postPolicyResponse = rest.updatePolicy("dataproduct", POLICY_1_UPDATED);
+	protected PolicyResource updatePolicy1() throws IOException {
+		ResponseEntity<PolicyResource> postPolicyResponse = rest.updatePolicy("dataproduct", POLICY_1_UPDATED);
 		verifyResponseEntity(postPolicyResponse, HttpStatus.OK, true);
 
 		return postPolicyResponse.getBody();
 	}
 
 
-	protected SuiteDTO createSuite1() throws IOException {
-		ResponseEntity<SuiteDTO> postSuiteResponse = rest.createSuite(SUITE_1);
+	protected SuiteResource createSuite1() throws IOException {
+		ResponseEntity<SuiteResource> postSuiteResponse = rest.createSuite(SUITE_1);
 		verifyResponseEntity(postSuiteResponse, HttpStatus.CREATED, true);
 
 		return postSuiteResponse.getBody();
