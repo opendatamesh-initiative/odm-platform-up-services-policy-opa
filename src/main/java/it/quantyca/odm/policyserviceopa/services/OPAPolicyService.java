@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import it.quantyca.odm.policyserviceopa.resources.v1.dto.PolicyResource;
+import org.opendatamesh.platform.up.policy.api.v1.resources.PolicyResource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class OPAPolicyService {
 
     public Iterable<PolicyResource> getAllOPAPolicies(){
 
-        List<PolicyResource> policies = new ArrayList<PolicyResource>();
+        List<PolicyResource> policies = new ArrayList<>();
         Map<String, Object> opaResponse = rt.getForObject(policiesUrl, Map.class);
         List<Map<String, Object>> result = (List<Map<String, Object>>) opaResponse.get("result");
         for (Map<String, Object> policy : result){

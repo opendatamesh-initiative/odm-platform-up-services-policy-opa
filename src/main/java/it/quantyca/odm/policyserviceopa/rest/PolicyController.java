@@ -11,10 +11,8 @@ import it.quantyca.odm.policyserviceopa.entities.PolicyEntity;
 import it.quantyca.odm.policyserviceopa.exceptions.BadRequestException;
 import it.quantyca.odm.policyserviceopa.exceptions.InternalServerException;
 import it.quantyca.odm.policyserviceopa.exceptions.NotFoundException;
-import it.quantyca.odm.policyserviceopa.exceptions.PolicyserviceOpaAPIStandardError;
+import org.opendatamesh.platform.up.policy.api.v1.resources.PolicyserviceOpaAPIStandardError;
 import it.quantyca.odm.policyserviceopa.repositories.PolicyRepository;
-import it.quantyca.odm.policyserviceopa.resources.v1.dto.PolicyResource;
-import it.quantyca.odm.policyserviceopa.resources.v1.errors.ErrorRes;
 import it.quantyca.odm.policyserviceopa.resources.v1.mappers.PolicyMapper;
 import it.quantyca.odm.policyserviceopa.services.OPAPolicyService;
 import it.quantyca.odm.policyserviceopa.services.PolicyService;
@@ -26,6 +24,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
+import org.opendatamesh.platform.up.policy.api.v1.resources.ErrorResource;
+import org.opendatamesh.platform.up.policy.api.v1.resources.PolicyResource;
 
 import javax.validation.Valid;
 import java.net.ConnectException;
@@ -76,7 +76,7 @@ public class PolicyController {
                     + "\r\n - Error code 50000 - Generic internal server error",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorRes.class)
+                            schema = @Schema(implementation = ErrorResource.class)
                     )
             )
     })
@@ -113,7 +113,7 @@ public class PolicyController {
                             + "\r\n - Error code 40401 - Policy not found",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorRes.class)
+                            schema = @Schema(implementation = ErrorResource.class)
                     )
             ),
             @ApiResponse(
@@ -122,7 +122,7 @@ public class PolicyController {
                             + "\r\n - Error code 50000 - Generic internal server error",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorRes.class)
+                            schema = @Schema(implementation = ErrorResource.class)
                     )
             )
     })
@@ -168,7 +168,7 @@ public class PolicyController {
                     description = "[Bad Request](https://www.rfc-editor.org/rfc/rfc9110.html#name-400-bad-request)"
                             + "\r\n - Error code 40001 - Policy already exists"
                             + "\r\n - Error code 40006 - OPA Server bad request",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorRes.class))
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResource.class))
             ),
             @ApiResponse(
                     responseCode = "500",
@@ -176,7 +176,7 @@ public class PolicyController {
                             + "\r\n - Error code 50000 - Generic internal server error"
                             + "\r\n - Error code 50001 - OPA Server internal server error"
                             + "\r\n - Error code 50002 - OPA Server not reachable",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorRes.class))
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResource.class))
             )
     })
     public ResponseEntity postPolicy(
@@ -262,13 +262,13 @@ public class PolicyController {
                     description = "[Bad Request](https://www.rfc-editor.org/rfc/rfc9110.html#name-400-bad-request)"
                             + "\r\n - Error code 40004 - ID conflict"
                             + "\r\n - Error code 40006 - OPA Server bad request",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorRes.class))
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResource.class))
             ),
             @ApiResponse(
                     responseCode = "404",
                     description = "[Not Found](https://www.rfc-editor.org/rfc/rfc9110.html#name-404-not-found)"
                             + "\r\n - Error code 40401 - Policy not found",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorRes.class))
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResource.class))
             ),
             @ApiResponse(
                     responseCode = "500",
@@ -276,7 +276,7 @@ public class PolicyController {
                             + "\r\n - Error code 50000 - Generic internal server error"
                             + "\r\n - Error code 50001 - OPA Server internal server error"
                             + "\r\n - Error code 50002 - OPA Server not reachable",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorRes.class))
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResource.class))
             )
     })
     public ResponseEntity putPolicyByID(
@@ -359,13 +359,13 @@ public class PolicyController {
                     responseCode = "400",
                     description = "[Bad Request](https://www.rfc-editor.org/rfc/rfc9110.html#name-400-bad-request)"
                             + "\r\n - Error code 40006 - OPA Server bad request",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorRes.class))
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResource.class))
             ),
             @ApiResponse(
                     responseCode = "404",
                     description = "[Not Found](https://www.rfc-editor.org/rfc/rfc9110.html#name-404-not-found)"
                             + "\r\n - Error code 40401 - Policy not found",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorRes.class))
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResource.class))
             ),
             @ApiResponse(
                     responseCode = "500",
@@ -373,7 +373,7 @@ public class PolicyController {
                             + "\r\n - Error code 50000 - Generic internal server error"
                             + "\r\n - Error code 50001 - OPA Server internal server error"
                             + "\r\n - Error code 50002 - OPA Server not reachable",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorRes.class))
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResource.class))
             )
     })
     public void deletePolicyByID(

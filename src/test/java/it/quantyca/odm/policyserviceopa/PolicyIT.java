@@ -1,8 +1,8 @@
 package it.quantyca.odm.policyserviceopa;
 
-import it.quantyca.odm.policyserviceopa.exceptions.PolicyserviceOpaAPIStandardError;
-import it.quantyca.odm.policyserviceopa.resources.v1.dto.PolicyResource;
-import it.quantyca.odm.policyserviceopa.resources.v1.errors.ErrorRes;
+import org.opendatamesh.platform.up.policy.api.v1.resources.PolicyserviceOpaAPIStandardError;
+import org.opendatamesh.platform.up.policy.api.v1.resources.ErrorResource;
+import org.opendatamesh.platform.up.policy.api.v1.resources.PolicyResource;
 import org.junit.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -46,12 +46,12 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
         cleanState();
 
         PolicyResource policyResource = createPolicy1();
-        ResponseEntity<ErrorRes> errorResponse = null;
+        ResponseEntity<ErrorResource> errorResponse = null;
 
         errorResponse = rest.postForEntity(
                 apiUrl(RoutesV1.POLICY),
                 policyResource,
-                ErrorRes.class
+                ErrorResource.class
         );
         verifyResponseError(
                 errorResponse,
@@ -88,13 +88,13 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
         cleanState();
 
         HttpEntity<PolicyResource> entity = rest.getPolicyFileAsHttpEntity(POLICY_3);
-        ResponseEntity<ErrorRes> errorResponse = null;
+        ResponseEntity<ErrorResource> errorResponse = null;
 
         errorResponse = rest.exchange(
                 apiUrlOfItem(RoutesV1.POLICY),
                 HttpMethod.PUT,
                 entity,
-                ErrorRes.class,
+                ErrorResource.class,
                 "wrongid"
         );
         verifyResponseError(
@@ -112,13 +112,13 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
         cleanState();
 
         HttpEntity<PolicyResource> entity = rest.getPolicyFileAsHttpEntity(POLICY_3);
-        ResponseEntity<ErrorRes> errorResponse = null;
+        ResponseEntity<ErrorResource> errorResponse = null;
 
         errorResponse = rest.exchange(
                 apiUrlOfItem(RoutesV1.POLICY),
                 HttpMethod.PUT,
                 entity,
-                ErrorRes.class,
+                ErrorResource.class,
                 "test"
         );
         verifyResponseError(
@@ -173,13 +173,13 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
 
         cleanState();
 
-        ResponseEntity<ErrorRes> errorResponse = null;
+        ResponseEntity<ErrorResource> errorResponse = null;
 
         errorResponse = rest.exchange(
                 apiUrlOfItem(RoutesV1.POLICY),
                 HttpMethod.GET,
                 null,
-                ErrorRes.class,
+                ErrorResource.class,
                 "dataproduct"
         );
 
@@ -211,13 +211,13 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
 
         cleanState();
 
-        ResponseEntity<ErrorRes> errorResponse = null;
+        ResponseEntity<ErrorResource> errorResponse = null;
 
         errorResponse = rest.exchange(
                 apiUrlOfItem(RoutesV1.POLICY),
                 HttpMethod.DELETE,
                 null,
-                ErrorRes.class,
+                ErrorResource.class,
                 "notanid"
         );
 

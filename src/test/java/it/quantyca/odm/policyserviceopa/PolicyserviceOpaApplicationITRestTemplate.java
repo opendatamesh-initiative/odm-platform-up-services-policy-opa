@@ -1,9 +1,9 @@
 package it.quantyca.odm.policyserviceopa;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.quantyca.odm.policyserviceopa.resources.v1.dto.PolicyResource;
-import it.quantyca.odm.policyserviceopa.resources.v1.dto.SuiteResource;
 import it.quantyca.odm.policyserviceopa.resources.v1.dto.ValidateResponse;
+import org.opendatamesh.platform.up.policy.api.v1.resources.PolicyResource;
+import org.opendatamesh.platform.up.policy.api.v1.resources.SuiteResource;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 

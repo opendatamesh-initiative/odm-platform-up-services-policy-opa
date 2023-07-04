@@ -1,8 +1,8 @@
 package it.quantyca.odm.policyserviceopa.resources.v1.mappers;
 
 import it.quantyca.odm.policyserviceopa.entities.PolicyEntity;
-import it.quantyca.odm.policyserviceopa.resources.v1.dto.PolicyResource;
 import org.mapstruct.Mapper;
+import org.opendatamesh.platform.up.policy.api.v1.resources.PolicyResource;
 
 @Mapper(componentModel = "spring")
 public interface PolicyMapper {

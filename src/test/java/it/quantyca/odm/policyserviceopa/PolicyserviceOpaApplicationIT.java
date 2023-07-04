@@ -1,10 +1,10 @@
 package it.quantyca.odm.policyserviceopa;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.quantyca.odm.policyserviceopa.exceptions.PolicyserviceOpaAPIStandardError;
-import it.quantyca.odm.policyserviceopa.resources.v1.dto.PolicyResource;
-import it.quantyca.odm.policyserviceopa.resources.v1.dto.SuiteResource;
-import it.quantyca.odm.policyserviceopa.resources.v1.errors.ErrorRes;
+import org.opendatamesh.platform.up.policy.api.v1.resources.PolicyserviceOpaAPIStandardError;
+import org.opendatamesh.platform.up.policy.api.v1.resources.ErrorResource;
+import org.opendatamesh.platform.up.policy.api.v1.resources.SuiteResource;
+import org.opendatamesh.platform.up.policy.api.v1.resources.PolicyResource;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -150,7 +150,7 @@ public abstract class PolicyserviceOpaApplicationIT {
 	}
 
 	protected void verifyResponseError(
-			ResponseEntity<ErrorRes> errorResponse,
+			ResponseEntity<ErrorResource> errorResponse,
 			HttpStatus status,
 			PolicyserviceOpaAPIStandardError error) {
 		assertThat(errorResponse.getStatusCode())

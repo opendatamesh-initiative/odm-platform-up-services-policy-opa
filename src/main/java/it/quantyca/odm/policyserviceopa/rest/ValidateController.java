@@ -10,10 +10,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import it.quantyca.odm.policyserviceopa.entities.SuiteEntity;
 import it.quantyca.odm.policyserviceopa.exceptions.BadRequestException;
 import it.quantyca.odm.policyserviceopa.exceptions.InternalServerException;
-import it.quantyca.odm.policyserviceopa.exceptions.PolicyserviceOpaAPIStandardError;
+import org.opendatamesh.platform.up.policy.api.v1.resources.PolicyserviceOpaAPIStandardError;
 import it.quantyca.odm.policyserviceopa.repositories.SuiteRepository;
 import it.quantyca.odm.policyserviceopa.resources.v1.dto.*;
-import it.quantyca.odm.policyserviceopa.resources.v1.errors.ErrorRes;
 import it.quantyca.odm.policyserviceopa.services.OPAValidateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +22,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
+import org.opendatamesh.platform.up.policy.api.v1.resources.ErrorResource;
+import org.opendatamesh.platform.up.policy.api.v1.resources.ValidatedPolicyResource;
+import org.opendatamesh.platform.up.policy.api.v1.resources.ValidatedSuiteResource;
 
 import javax.validation.Valid;
 import java.net.ConnectException;
@@ -68,7 +70,7 @@ public class ValidateController {
                     description = "Error code 40006 - OPA Server bad request",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorRes.class)
+                            schema = @Schema(implementation = ErrorResource.class)
                     )
             ),
             @ApiResponse(
@@ -78,7 +80,7 @@ public class ValidateController {
                             + "\n\nError code 50002 - OPA Server not reachable",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorRes.class)
+                            schema = @Schema(implementation = ErrorResource.class)
                     )
             )
     })

@@ -1,9 +1,9 @@
 package it.quantyca.odm.policyserviceopa;
 
-import it.quantyca.odm.policyserviceopa.exceptions.PolicyserviceOpaAPIStandardError;
-import it.quantyca.odm.policyserviceopa.resources.v1.dto.SuiteResource;
-import it.quantyca.odm.policyserviceopa.resources.v1.errors.ErrorRes;
+import org.opendatamesh.platform.up.policy.api.v1.resources.PolicyserviceOpaAPIStandardError;
 import org.junit.Test;
+import org.opendatamesh.platform.up.policy.api.v1.resources.ErrorResource;
+import org.opendatamesh.platform.up.policy.api.v1.resources.SuiteResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -34,7 +34,7 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
         SuiteResource suiteResource = createSuite1();
         assertThat(suiteResource.getId()).isEqualTo("odm-suite");
         assertThat(suiteResource.getDisplayName()).isEqualTo("Suite odm-suite");
-        assertThat(suiteResource.getDescription()).isEqualTo("Suite collection for odm-suite");
+        assertThat(suiteResource.getDescription()).isEqualTo("Policy collection for odm-suite");
         System.out.println(suiteResource.getPolicies());
 
     }
@@ -46,12 +46,12 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
         cleanState();
 
         SuiteResource suiteResource = createSuite1();
-        ResponseEntity<ErrorRes> errorResponse = null;
+        ResponseEntity<ErrorResource> errorResponse = null;
 
         errorResponse = rest.postForEntity(
                 apiUrl(RoutesV1.SUITE),
                 suiteResource,
-                ErrorRes.class
+                ErrorResource.class
         );
         verifyResponseError(
                 errorResponse,
@@ -118,7 +118,7 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
     public void testSuiteUpdateError404() throws IOException {
 
         HttpEntity<SuiteResource> entity = null;
-        ResponseEntity<ErrorRes> errorResponse = null;
+        ResponseEntity<ErrorResource> errorResponse = null;
 
         String extensions = "/not-a-suite?mode=ADD&policyId=newpolicy";
 
@@ -126,7 +126,7 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
                 apiUrl(RoutesV1.SUITE, extensions),
                 HttpMethod.PATCH,
                 null,
-                ErrorRes.class
+                ErrorResource.class
         );
         System.out.println(errorResponse.getBody());
         verifyResponseError(
@@ -184,13 +184,13 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
 
         cleanState();
 
-        ResponseEntity<ErrorRes> errorResponse = null;
+        ResponseEntity<ErrorResource> errorResponse = null;
 
         errorResponse = rest.exchange(
                 apiUrlOfItem(RoutesV1.SUITE),
                 HttpMethod.GET,
                 null,
-                ErrorRes.class,
+                ErrorResource.class,
                 "odm-suite"
         );
 
@@ -222,13 +222,13 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
 
         cleanState();
 
-        ResponseEntity<ErrorRes> errorResponse = null;
+        ResponseEntity<ErrorResource> errorResponse = null;
 
         errorResponse = rest.exchange(
                 apiUrlOfItem(RoutesV1.SUITE),
                 HttpMethod.DELETE,
                 null,
-                ErrorRes.class,
+                ErrorResource.class,
                 "notanid"
         );
 

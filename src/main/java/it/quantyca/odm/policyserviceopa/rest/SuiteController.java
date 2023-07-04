@@ -11,10 +11,8 @@ import it.quantyca.odm.policyserviceopa.entities.SuiteEntity;
 import it.quantyca.odm.policyserviceopa.enums.PatchModes;
 import it.quantyca.odm.policyserviceopa.exceptions.BadRequestException;
 import it.quantyca.odm.policyserviceopa.exceptions.NotFoundException;
-import it.quantyca.odm.policyserviceopa.exceptions.PolicyserviceOpaAPIStandardError;
+import org.opendatamesh.platform.up.policy.api.v1.resources.PolicyserviceOpaAPIStandardError;
 import it.quantyca.odm.policyserviceopa.repositories.SuiteRepository;
-import it.quantyca.odm.policyserviceopa.resources.v1.dto.SuiteResource;
-import it.quantyca.odm.policyserviceopa.resources.v1.errors.ErrorRes;
 import it.quantyca.odm.policyserviceopa.resources.v1.mappers.SuiteMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +20,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.opendatamesh.platform.up.policy.api.v1.resources.SuiteResource;
+import org.opendatamesh.platform.up.policy.api.v1.resources.ErrorResource;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -66,7 +66,7 @@ public class SuiteController {
                             + "\r\n - Error code 50000 - Generic internal server error",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorRes.class)
+                            schema = @Schema(implementation = ErrorResource.class)
                     )
             )
     })
@@ -103,7 +103,7 @@ public class SuiteController {
                             + "\r\n - Error code 40402 - Suite not found",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorRes.class)
+                            schema = @Schema(implementation = ErrorResource.class)
                     )
             ),
             @ApiResponse(
@@ -112,7 +112,7 @@ public class SuiteController {
                             + "\r\n - Error code 50000 - Generic internal server error",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorRes.class)
+                            schema = @Schema(implementation = ErrorResource.class)
                     )
             )
     })
@@ -160,7 +160,7 @@ public class SuiteController {
                             + "\r\n - Error code 40006 - OPA Bad Request",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorRes.class)
+                            schema = @Schema(implementation = ErrorResource.class)
                     )
             ),
             @ApiResponse(
@@ -169,7 +169,7 @@ public class SuiteController {
                             + "\r\n - Error code 50000 - Generic internal server error",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorRes.class)
+                            schema = @Schema(implementation = ErrorResource.class)
                     )
             )
     })
@@ -220,7 +220,7 @@ public class SuiteController {
                             + "\r\n - Error code 40402 - Suite not found",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorRes.class)
+                            schema = @Schema(implementation = ErrorResource.class)
                     )
             ),
             @ApiResponse(
@@ -229,7 +229,7 @@ public class SuiteController {
                             + "\r\n - Error code 50000 - Generic internal server error",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorRes.class)
+                            schema = @Schema(implementation = ErrorResource.class)
                     )
             )
     })
@@ -278,7 +278,7 @@ public class SuiteController {
                             + "\r\n - Error code 40402 - Suite not found",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorRes.class)
+                            schema = @Schema(implementation = ErrorResource.class)
                     )
             ),
             @ApiResponse(
@@ -287,7 +287,7 @@ public class SuiteController {
                             + "\r\n - Error code 50000 - Generic internal server error",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorRes.class)
+                            schema = @Schema(implementation = ErrorResource.class)
                     )
             )
     })
