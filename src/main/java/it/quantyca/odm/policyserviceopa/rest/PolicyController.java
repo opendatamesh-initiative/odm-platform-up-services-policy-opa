@@ -11,7 +11,7 @@ import it.quantyca.odm.policyserviceopa.services.OPAPolicyService;
 import it.quantyca.odm.policyserviceopa.services.PolicyService;
 import org.opendatamesh.platform.up.policy.api.v1.controllers.AbstractPolicyController;
 import org.opendatamesh.platform.up.policy.api.v1.resources.PolicyResource;
-import org.opendatamesh.platform.up.policy.api.v1.resources.PolicyserviceOpaAPIStandardError;
+import org.opendatamesh.platform.up.policy.api.v1.errors.PolicyserviceOpaAPIStandardError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

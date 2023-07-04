@@ -1,10 +1,11 @@
 package it.quantyca.odm.policyserviceopa;
 
-import it.quantyca.odm.policyserviceopa.resources.v1.dto.ValidateResponse;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
+
+import org.opendatamesh.platform.up.policy.api.v1.resources.ValidateResponse;
 
 import java.io.IOException;
 import java.util.Map;

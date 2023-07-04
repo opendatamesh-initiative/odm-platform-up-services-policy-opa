@@ -1,7 +1,7 @@
 package it.quantyca.odm.policyserviceopa;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.opendatamesh.platform.up.policy.api.v1.resources.PolicyserviceOpaAPIStandardError;
+import org.opendatamesh.platform.up.policy.api.v1.errors.PolicyserviceOpaAPIStandardError;
 import org.opendatamesh.platform.up.policy.api.v1.resources.ErrorResource;
 import org.opendatamesh.platform.up.policy.api.v1.resources.SuiteResource;
 import org.opendatamesh.platform.up.policy.api.v1.resources.PolicyResource;

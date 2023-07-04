@@ -27,12 +27,13 @@ public class PolicyserviceOpaAPIExceptionHandler extends ResponseEntityException
 		errorLogMessage += e.getCause()!=null?" : " + e.getCause().getMessage():"";
 		logger.error(errorLogMessage);
 		String url = getUrl(request);
-		ErrorResource error = new ErrorResource();
-		error.setStatus(e.getStatus().value());
-		error.setCode(e.getStandardErrorCode());
-		error.setDescription(e.getStandardErrorDescription());
-		error.setMessage(e.getMessage());
-		error.setPath(url);
+		ErrorResource error = new ErrorResource(
+				e.getStatus().value(),
+				e.getStandardErrorCode(),
+				e.getStandardErrorDescription(),
+				e.getMessage(),
+				url
+		);
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		return handleExceptionInternal(e, error, headers, e.getStatus(), request);
