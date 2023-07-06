@@ -6,15 +6,15 @@
 
     <parent>
         <groupId>org.opendatamesh</groupId>
-        <artifactId>policyservice-opa</artifactId>
+        <artifactId>odm-platform-up-policy-opa</artifactId>
         <version>0.0.1-SNAPSHOT</version>
         <relativePath>../</relativePath>
     </parent>
 
     <groupId>org.opendatamesh</groupId>
-    <artifactId>opa-client</artifactId>
+    <artifactId>odm-platform-up-policy-opa-client</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>opa-client</name>
+    <name>OPA Client</name>
     <description>Implementation of policy service client for OPA</description>
     <properties>
         <java.version>11</java.version>

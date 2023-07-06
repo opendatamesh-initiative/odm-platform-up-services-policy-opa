@@ -6,15 +6,15 @@
 
 	<parent>
 		<groupId>org.opendatamesh</groupId>
-		<artifactId>policyservice-opa</artifactId>
+		<artifactId>odm-platform-up-policy-opa</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../</relativePath>
 	</parent>
 
 	<groupId>org.opendatamesh</groupId>
-	<artifactId>opa-policy-server</artifactId>
+	<artifactId>odm-platform-up-policy-opa-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>opa-policy-server</name>
+	<name>OPA server</name>
 	<description>Implementation of policy service server for OPA</description>
 	<properties>
 		<java.version>11</java.version>
@@ -117,22 +117,23 @@
         	<artifactId>mapstruct</artifactId>
 			<version>1.5.3.Final</version>
     	</dependency>
-		<dependency>
-			<groupId>org.mapstruct</groupId>
-			<artifactId>mapstruct-processor</artifactId>
-			<version>1.5.3.Final</version>
-		</dependency>
 
 		<!-- ODM -->
 		<dependency>
 			<groupId>org.opendatamesh</groupId>
-			<artifactId>opa-client</artifactId>
+			<artifactId>odm-platform-up-policy-opa-client</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
-		<dependency> <!-- To Remove? Already in the client? -->
+		<dependency>
 			<groupId>org.opendatamesh</groupId>
 			<artifactId>odm-platform-up-policy-api</artifactId>
+			<version>1.0.0</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.opendatamesh</groupId>
+			<artifactId>odm-platform-up-policy-server</artifactId>
 			<version>1.0.0</version>
 			<scope>compile</scope>
 		</dependency>
@@ -163,18 +164,6 @@
 					</annotationProcessorPaths>
 				</configuration>
        		</plugin>
-
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>2.3.3.RELEASE</version>
-				<configuration>
-					<classifier>exec</classifier>
-					<wait>1000</wait>
-					<maxAttempts>180</maxAttempts>
-					<mainClass>${policyservice.mainclass}</mainClass>
-				</configuration>
-			</plugin>
 
 		</plugins>
 	</build>

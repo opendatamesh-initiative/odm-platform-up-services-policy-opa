@@ -32,8 +32,8 @@ License.
 	</parent>
 
 	<groupId>org.opendatamesh</groupId>
-	<artifactId>policyservice-opa</artifactId>
-	<name>policyservice-opa</name>
+	<artifactId>odm-platform-up-policy-opa</artifactId>
+	<name>OPA Policy Service</name>
 
 	<description>Implementation of policy service for OPA</description>
 	<version>0.0.1-SNAPSHOT</version>
@@ -61,37 +61,6 @@ License.
 			<organizationUrl>https://www.quantyca.it/</organizationUrl>
 		</developer>
 	</developers>
-
-	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-maven-plugin</artifactId>
-					<version>2.3.3.RELEASE</version>
-					<configuration>
-						<mainClass>${start-class}</mainClass>
-						<!-- this is necessary as we're not using the Boot parent -->
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.qunix</groupId>
-					<artifactId>structure-maven-plugin</artifactId>
-					<version>0.0.2</version>
-					<inherited>false</inherited>
-					<executions>
-						<execution>
-							<phase>compile</phase>
-							<goals>
-								<goal>modules</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-			</plugins>
-
-		</pluginManagement>
-	</build>
 
 	<properties>
 		<java.version>11</java.version>
