@@ -6,15 +6,15 @@
 
     <parent>
         <groupId>org.opendatamesh</groupId>
-        <artifactId>policyservice-opa</artifactId>
+        <artifactId>odm-platform-up-policy-opa</artifactId>
         <version>0.0.1-SNAPSHOT</version>
         <relativePath>../</relativePath>
     </parent>
 
     <groupId>org.opendatamesh</groupId>
-    <artifactId>opa-client</artifactId>
+    <artifactId>odm-platform-up-policy-opa-client</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>opa-client</name>
+    <name>OPA Client</name>
     <description>Implementation of policy service client for OPA</description>
     <properties>
         <java.version>11</java.version>
@@ -46,18 +46,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <!-- Auto Doc -->
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.6.11</version>
         </dependency>
 
         <!-- Annotations -->
