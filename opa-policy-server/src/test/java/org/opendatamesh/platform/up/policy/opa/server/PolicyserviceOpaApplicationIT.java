@@ -2,6 +2,7 @@ package org.opendatamesh.platform.up.policy.opa.server;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.runner.RunWith;
+import org.opendatamesh.platform.up.policy.api.v1.clients.PolicyServiceClient;
 import org.opendatamesh.platform.up.policy.api.v1.errors.PolicyserviceOpaAPIStandardError;
 import org.opendatamesh.platform.up.policy.api.v1.resources.ErrorResource;
 import org.opendatamesh.platform.up.policy.api.v1.resources.PolicyResource;
@@ -30,7 +31,7 @@ public abstract class PolicyserviceOpaApplicationIT {
 	// RestTemplate will be removed once client will be fully developed
 	protected PolicyserviceOpaApplicationITRestTemplate rest;
 
-	protected TestPolicyServiceClient client;
+	protected PolicyServiceClient client;
 
 	protected final String POLICY_1 = "src/test/resources/policies/policy1.json";
 
@@ -58,6 +59,7 @@ public abstract class PolicyserviceOpaApplicationIT {
 
 	@PostConstruct
 	public final void init() {
+		// The following code will be deleted after the refactor to use a client instead of a custom RestTemplate
 		rest = new PolicyserviceOpaApplicationITRestTemplate(mapper);
 		rest.setPort(port);
 		HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
@@ -66,10 +68,10 @@ public abstract class PolicyserviceOpaApplicationIT {
 		DefaultUriBuilderFactory defaultUriBuilderFactory = new DefaultUriBuilderFactory();
 		defaultUriBuilderFactory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.TEMPLATE_AND_VALUES);
 		rest.setUriTemplateHandler(defaultUriBuilderFactory);
+		// End code that will be deleted
 
-		client = new TestPolicyServiceClient("http://localhost:" + port);
-		client.getRestTemplate().setRequestFactory(requestFactory);
-		client.getRestTemplate().setUriTemplateHandler(defaultUriBuilderFactory);
+		// New code
+		client = new PolicyServiceClient("http://localhost:" + port);
 	}
 
 	// ======================================================================================
