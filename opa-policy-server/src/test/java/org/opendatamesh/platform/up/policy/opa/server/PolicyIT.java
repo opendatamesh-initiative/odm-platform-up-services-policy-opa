@@ -141,11 +141,16 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
         createPolicy1();
         createPolicy2();
 
+        /*
+        // OLD WAY:
         ResponseEntity<PolicyResource[]> getPolicyResponse = rest.readAllPolicies();
         PolicyResource[] policyResources = getPolicyResponse.getBody();
         verifyResponseEntity(getPolicyResponse, HttpStatus.OK, true);
+        */
+        //NEW WAY:
+        PolicyResource[] policyResources = client.readPolicies();
 
-        assertThat(getPolicyResponse.getBody().length).isEqualTo(2);
+        assertThat(policyResources.length).isEqualTo(2);
         assertThat(policyResources[0].getId()).isEqualTo("dataproduct");
         assertThat(policyResources[1].getId()).isEqualTo("xpolicy");
 

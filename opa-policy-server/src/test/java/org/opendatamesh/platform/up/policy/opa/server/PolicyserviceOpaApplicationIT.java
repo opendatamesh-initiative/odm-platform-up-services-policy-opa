@@ -27,7 +27,10 @@ public abstract class PolicyserviceOpaApplicationIT {
 	@LocalServerPort
 	protected String port;
 
+	// RestTemplate will be removed once client will be fully developed
 	protected PolicyserviceOpaApplicationITRestTemplate rest;
+
+	protected TestPolicyServiceClient client;
 
 	protected final String POLICY_1 = "src/test/resources/policies/policy1.json";
 
@@ -63,6 +66,10 @@ public abstract class PolicyserviceOpaApplicationIT {
 		DefaultUriBuilderFactory defaultUriBuilderFactory = new DefaultUriBuilderFactory();
 		defaultUriBuilderFactory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.TEMPLATE_AND_VALUES);
 		rest.setUriTemplateHandler(defaultUriBuilderFactory);
+
+		client = new TestPolicyServiceClient("http://localhost:" + port);
+		client.getRestTemplate().setRequestFactory(requestFactory);
+		client.getRestTemplate().setUriTemplateHandler(defaultUriBuilderFactory);
 	}
 
 	// ======================================================================================
@@ -89,6 +96,7 @@ public abstract class PolicyserviceOpaApplicationIT {
 	// ======================================================================================
 
 	protected PolicyResource createPolicy1() throws IOException {
+
 		ResponseEntity<PolicyResource> postPolicyResponse = rest.createPolicy(POLICY_1);
 		verifyResponseEntity(postPolicyResponse, HttpStatus.CREATED, true);
 

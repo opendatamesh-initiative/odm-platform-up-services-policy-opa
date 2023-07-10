@@ -24,7 +24,7 @@ cd odm-plane-utility-policyservice-opa
 Compile the project:
 
 ```bash
-mvn clean install
+mvn clean package
 ```
 
 ### Run application
@@ -62,7 +62,7 @@ Here you can find the following two Dockerfiles:
 If you decide to create the Docker image using the second Dockerfile (i.e. `Dokerfile.local`), you need to first execute the build locally by running the following command:
 
 ```bash
-mvn clean install
+mvn clean package
 ```
 
 ### Run OPA server
