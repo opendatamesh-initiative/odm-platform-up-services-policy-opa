@@ -148,7 +148,7 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
         verifyResponseEntity(getPolicyResponse, HttpStatus.OK, true);
         */
         //NEW WAY:
-        PolicyResource[] policyResources = client.readPolicies();
+        PolicyResource[] policyResources = client.readPolicies().getBody();
 
         assertThat(policyResources.length).isEqualTo(2);
         assertThat(policyResources[0].getId()).isEqualTo("dataproduct");
