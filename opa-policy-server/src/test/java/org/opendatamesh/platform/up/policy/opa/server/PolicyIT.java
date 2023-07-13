@@ -60,6 +60,32 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
         );
 
     }
+//    @Test
+//    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+//    public void testPolicyCreateError400_V2() throws IOException {
+//
+//        cleanState();
+//
+//        ResponseEntity policyResource = createPolicyError();
+//        ResponseEntity<ErrorResource> errorResponse = null;
+//
+//        assert policyResource!=null;
+////        errorResponse = rest.postForEntity(
+////                apiUrl(RoutesV1.POLICY),
+////                policyResource,
+////                PolicyResource.class
+////        );
+//        errorResponse = client.createPolicy((PolicyResource) policyResource.getBody());
+//        System.out.println(errorResponse);
+//        //<400,PolicyResource(id=null, displayName=null, description=Policy already exists, rawPolicy=null, createdAt=null, updatedAt=null)
+//        // ,[Content-Type:"application/json", Transfer-Encoding:"chunked", Date:"Thu, 13 Jul 2023 13:55:02 GMT", Connection:"close"]>
+//
+//        verifyResponseError(
+//                errorResponse,
+//                HttpStatus.BAD_REQUEST,
+//                PolicyserviceOpaAPIStandardError.SC400_POLICY_ALREADY_EXISTS
+//        );
+//    }
 
     // ----------------------------------------
     // UPDATE Policy
@@ -145,14 +171,17 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
         // OLD WAY:
         ResponseEntity<PolicyResource[]> getPolicyResponse = rest.readAllPolicies();
         PolicyResource[] policyResources = getPolicyResponse.getBody();
+
+        //TODO: the ResponseEntity still needs to be verified in another test (or embedded in tests)
         verifyResponseEntity(getPolicyResponse, HttpStatus.OK, true);
         */
         //NEW WAY:
-        PolicyResource[] policyResources = client.readPolicies().getBody();
+        ResponseEntity<PolicyResource[]> policyResources = client.readPolicies();
 
-        assertThat(policyResources.length).isEqualTo(2);
-        assertThat(policyResources[0].getId()).isEqualTo("dataproduct");
-        assertThat(policyResources[1].getId()).isEqualTo("xpolicy");
+        assert policyResources.getBody() != null;
+        assertThat(policyResources.getBody().length).isEqualTo(2);
+        assertThat(policyResources.getBody()[0].getId()).isEqualTo("dataproduct");
+        assertThat(policyResources.getBody()[1].getId()).isEqualTo("xpolicy");
 
     }
 
@@ -164,7 +193,7 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
 
         createPolicy1();
 
-        ResponseEntity<PolicyResource> getPolicyResponse = rest.readOnePolicy("dataproduct");
+        ResponseEntity<PolicyResource> getPolicyResponse = client.readOnePolicy("dataproduct");
         PolicyResource policyResource = getPolicyResponse.getBody();
         verifyResponseEntity(getPolicyResponse, HttpStatus.OK, true);
 
@@ -205,7 +234,7 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
 
         PolicyResource policy = createPolicy1();
 
-        ResponseEntity<Void> getPolicyResponse = rest.deletePolicy(policy.getId());
+        ResponseEntity<Void> getPolicyResponse = client.deletePolicy(policy.getId());
         verifyResponseEntity(getPolicyResponse, HttpStatus.OK, false);
 
     }
@@ -240,10 +269,10 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
     // ----------------------------------------
     private void cleanState() {
 
-        ResponseEntity<PolicyResource[]> policies = rest.readAllPolicies();
+        ResponseEntity<PolicyResource[]> policies = client.readPolicies();
         PolicyResource[] policyResources = policies.getBody();
         for (PolicyResource policyResource : policyResources) {
-            rest.deletePolicy(policyResource.getId());
+            client.deletePolicy(policyResource.getId());
         }
 
     }

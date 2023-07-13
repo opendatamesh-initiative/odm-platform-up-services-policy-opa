@@ -1,6 +1,7 @@
 package org.opendatamesh.platform.up.policy.opa.server;
 
 import org.junit.Test;
+import org.opendatamesh.platform.up.policy.api.v1.enums.PatchModes;
 import org.opendatamesh.platform.up.policy.api.v1.errors.PolicyserviceOpaAPIStandardError;
 import org.opendatamesh.platform.up.policy.api.v1.resources.ErrorResource;
 import org.opendatamesh.platform.up.policy.api.v1.resources.SuiteResource;
@@ -76,14 +77,15 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
         // TEST 1: ADD a policy to a suite
 
         ResponseEntity<SuiteResource> entity = null;
-        String extensions = "/odm-suite?mode=ADD&policyId=newpolicy";
+       //String extensions = "/odm-suite?mode=ADD&policyId=newpolicy";
 
-        entity = rest.exchange(
-                apiUrl(RoutesV1.SUITE, extensions),
-                HttpMethod.PATCH,
-                null,
-                SuiteResource.class
-        );
+//        entity = rest.exchange(
+//                apiUrl(RoutesV1.SUITE, extensions),
+//                HttpMethod.PATCH,
+//                null,
+//                SuiteResource.class
+//        );
+        entity = client.updateSuite("odm-suite", PatchModes.ADD,"newpolicy");
 
         SuiteResource suiteResourceUpdated = entity.getBody();
 
@@ -94,14 +96,15 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
         assertThat(suiteResourceUpdated.getPolicies().contains("newpolicy")).isTrue();
 
         // TEST 2: REMOVE a policy from suite
-        extensions = "/odm-suite?mode=REMOVE&policyId=newpolicy";
+        //extensions = "/odm-suite?mode=REMOVE&policyId=newpolicy";
 
-        entity = rest.exchange(
-                apiUrl(RoutesV1.SUITE, extensions),
-                HttpMethod.PATCH,
-                null,
-                SuiteResource.class
-        );
+//        entity = rest.exchange(
+//                apiUrl(RoutesV1.SUITE, extensions),
+//                HttpMethod.PATCH,
+//                null,
+//                SuiteResource.class
+//        );
+        entity = client.updateSuite("odm-suite", PatchModes.REMOVE,"newpolicy");
 
         suiteResourceUpdated = entity.getBody();
 
@@ -150,7 +153,7 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
 
         createSuite1();
 
-        ResponseEntity<SuiteResource[]> getSuiteResponse = rest.readAllSuites();
+        ResponseEntity<SuiteResource[]> getSuiteResponse = client.readSuites();
         SuiteResource[] suiteResources = getSuiteResponse.getBody();
         verifyResponseEntity(getSuiteResponse, HttpStatus.OK, true);
 
@@ -167,7 +170,8 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
 
         createSuite1();
 
-        ResponseEntity<SuiteResource> getSuiteResponse = rest.readOneSuite("odm-suite");
+//        ResponseEntity<SuiteResource> getSuiteResponse = rest.readOneSuite("odm-suite");
+        ResponseEntity<SuiteResource> getSuiteResponse = client.readOneSuite("odm-suite");
         SuiteResource suiteResource = getSuiteResponse.getBody();
         verifyResponseEntity(getSuiteResponse, HttpStatus.OK, true);
 
@@ -211,7 +215,7 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
 
         SuiteResource suiteResource = createSuite1();
 
-        ResponseEntity<Void> getPolicyResponse = rest.deleteSuite(suiteResource.getId());
+        ResponseEntity<Void> getPolicyResponse = client.deleteSuite(suiteResource.getId());
         verifyResponseEntity(getPolicyResponse, HttpStatus.OK, false);
 
     }
@@ -246,10 +250,11 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
     // ----------------------------------------
     private void cleanState() {
 
-        ResponseEntity<SuiteResource[]> suites = rest.readAllSuites();
+        //ResponseEntity<SuiteResource[]> suites = rest.readAllSuites();
+        ResponseEntity<SuiteResource[]> suites = client.readSuites();
         SuiteResource[] suiteResources = suites.getBody();
         for (SuiteResource suiteResource : suiteResources) {
-            rest.deleteSuite(suiteResource.getId());
+            client.deleteSuite(suiteResource.getId());
         }
 
     }

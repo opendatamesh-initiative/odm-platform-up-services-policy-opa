@@ -33,6 +33,8 @@ public abstract class PolicyserviceOpaApplicationIT {
 
 	protected PolicyServiceClient client;
 
+	protected ResourceBuilder rb;
+
 	protected final String POLICY_1 = "src/test/resources/policies/policy1.json";
 
 	protected final String POLICY_1_UPDATED = "src/test/resources/policies/policy1-updated.json";
@@ -40,6 +42,8 @@ public abstract class PolicyserviceOpaApplicationIT {
 	protected final String POLICY_2 = "src/test/resources/policies/policy2.json";
 
 	protected final String POLICY_3 = "src/test/resources/policies/policy3.json";
+
+	protected final String POLICY_ERROR = "src/test/resources/policies/policyError.json";
 
 	protected final String POLICY_VERSIONS = "src/test/resources/policies/policy-versions.json";
 
@@ -72,6 +76,8 @@ public abstract class PolicyserviceOpaApplicationIT {
 
 		// New code
 		client = new PolicyServiceClient("http://localhost:" + port);
+
+		rb = new ResourceBuilder();
 	}
 
 	// ======================================================================================
@@ -99,7 +105,13 @@ public abstract class PolicyserviceOpaApplicationIT {
 
 	protected PolicyResource createPolicy1() throws IOException {
 
+		/* OLD:
 		ResponseEntity<PolicyResource> postPolicyResponse = rest.createPolicy(POLICY_1);
+		verifyResponseEntity(postPolicyResponse, HttpStatus.CREATED, true);
+		 */
+
+		PolicyResource pr = rb.readResourceFromFile(POLICY_1,PolicyResource.class);
+		ResponseEntity<PolicyResource> postPolicyResponse = client.createPolicy(pr);
 		verifyResponseEntity(postPolicyResponse, HttpStatus.CREATED, true);
 
 		return postPolicyResponse.getBody();
@@ -107,10 +119,22 @@ public abstract class PolicyserviceOpaApplicationIT {
 	}
 
 	protected PolicyResource createPolicy2() throws IOException {
-		ResponseEntity<PolicyResource> postPolicyResponse = rest.createPolicy(POLICY_2);
+		//ResponseEntity<PolicyResource> postPolicyResponse = rest.createPolicy(POLICY_2);
+
+		PolicyResource pr = rb.readResourceFromFile(POLICY_2,PolicyResource.class);
+		ResponseEntity<PolicyResource> postPolicyResponse = client.createPolicy(pr);
 		verifyResponseEntity(postPolicyResponse, HttpStatus.CREATED, true);
 
 		return postPolicyResponse.getBody();
+
+	}
+	protected ResponseEntity createPolicyError() throws IOException {
+		//ResponseEntity<PolicyResource> postPolicyResponse = rest.createPolicy(POLICY_2);
+
+		PolicyResource pr = rb.readResourceFromFile(POLICY_ERROR,PolicyResource.class);
+		ResponseEntity<ErrorResource> postPolicyResponse = client.createPolicy(pr);
+
+		return postPolicyResponse;
 
 	}
 
@@ -131,7 +155,8 @@ public abstract class PolicyserviceOpaApplicationIT {
 	}
 
 	protected PolicyResource updatePolicy1() throws IOException {
-		ResponseEntity<PolicyResource> postPolicyResponse = rest.updatePolicy("dataproduct", POLICY_1_UPDATED);
+		PolicyResource pr = rb.readResourceFromFile(POLICY_1_UPDATED,PolicyResource.class);
+		ResponseEntity<PolicyResource> postPolicyResponse = client.updatePolicy("dataproduct", pr);
 		verifyResponseEntity(postPolicyResponse, HttpStatus.OK, true);
 
 		return postPolicyResponse.getBody();
@@ -139,7 +164,9 @@ public abstract class PolicyserviceOpaApplicationIT {
 
 
 	protected SuiteResource createSuite1() throws IOException {
-		ResponseEntity<SuiteResource> postSuiteResponse = rest.createSuite(SUITE_1);
+
+		SuiteResource sr = rb.readResourceFromFile(SUITE_1,SuiteResource.class);
+		ResponseEntity<SuiteResource> postSuiteResponse = client.createSuite(sr);
 		verifyResponseEntity(postSuiteResponse, HttpStatus.CREATED, true);
 
 		return postSuiteResponse.getBody();
