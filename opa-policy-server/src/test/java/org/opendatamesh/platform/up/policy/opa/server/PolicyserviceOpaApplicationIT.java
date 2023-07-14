@@ -112,6 +112,7 @@ public abstract class PolicyserviceOpaApplicationIT {
 
 		PolicyResource pr = rb.readResourceFromFile(POLICY_1,PolicyResource.class);
 		ResponseEntity<PolicyResource> postPolicyResponse = client.createPolicy(pr);
+
 		verifyResponseEntity(postPolicyResponse, HttpStatus.CREATED, true);
 
 		return postPolicyResponse.getBody();

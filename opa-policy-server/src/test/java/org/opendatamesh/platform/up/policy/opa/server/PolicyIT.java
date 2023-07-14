@@ -53,6 +53,7 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
                 policyResource,
                 ErrorResource.class
         );
+        System.out.println(errorResponse);
         verifyResponseError(
                 errorResponse,
                 HttpStatus.BAD_REQUEST,
@@ -60,32 +61,34 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
         );
 
     }
-//    @Test
-//    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-//    public void testPolicyCreateError400_V2() throws IOException {
-//
-//        cleanState();
-//
-//        ResponseEntity policyResource = createPolicyError();
-//        ResponseEntity<ErrorResource> errorResponse = null;
-//
-//        assert policyResource!=null;
-////        errorResponse = rest.postForEntity(
-////                apiUrl(RoutesV1.POLICY),
-////                policyResource,
-////                PolicyResource.class
-////        );
-//        errorResponse = client.createPolicy((PolicyResource) policyResource.getBody());
-//        System.out.println(errorResponse);
-//        //<400,PolicyResource(id=null, displayName=null, description=Policy already exists, rawPolicy=null, createdAt=null, updatedAt=null)
-//        // ,[Content-Type:"application/json", Transfer-Encoding:"chunked", Date:"Thu, 13 Jul 2023 13:55:02 GMT", Connection:"close"]>
-//
-//        verifyResponseError(
-//                errorResponse,
-//                HttpStatus.BAD_REQUEST,
-//                PolicyserviceOpaAPIStandardError.SC400_POLICY_ALREADY_EXISTS
-//        );
-//    }
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void testPolicyCreateError400_V2() throws IOException {
+
+        cleanState();
+
+        ResponseEntity policyResource = createPolicyError();
+        ResponseEntity<ErrorResource> errorResponse = null;
+
+        assert policyResource!=null;
+
+        errorResponse = client.createPolicy((PolicyResource) policyResource.getBody());
+//        ResponseEntity<ErrorResource> errResource = ResponseEntity.status(errorResponse.getStatusCode())
+//                .headers(errorResponse.getHeaders())
+//                .body((ErrorResource) errorResponse.getBody());
+        //<400,PolicyResource(id=null, displayName=null, description=Policy already exists, rawPolicy=null, createdAt=null, updatedAt=null)
+        // ,[Content-Type:"application/json", Transfer-Encoding:"chunked", Date:"Thu, 13 Jul 2023 13:55:02 GMT", Connection:"close"]>
+
+        //<400,ErrorResource(status=400, code=40001,
+        // description=Policy already exists, message=Policy with ID dataproductalready exists on DB,
+        // path=/api/v1/planes/utility/policy-services/opa/policies, timestamp=null),
+        // [Content-Type:"application/json", Transfer-Encoding:"chunked", Date:"Fri, 14 Jul 2023 08:37:54 GMT", Connection:"close"]>
+        verifyResponseError(
+                errorResponse,
+                HttpStatus.BAD_REQUEST,
+                PolicyserviceOpaAPIStandardError.SC400_POLICY_ALREADY_EXISTS
+        );
+    }
 
     // ----------------------------------------
     // UPDATE Policy

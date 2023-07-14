@@ -1,0 +1,5 @@
+{
+  "displayName": "Dataproduct policies",
+  "description": 1234,
+  "rawPolicy": "package dataproduct\n\ndefault allow := false\n\nallow := true {                                     \n    startswith(input.name, \"dp-\")\n}"
+}
