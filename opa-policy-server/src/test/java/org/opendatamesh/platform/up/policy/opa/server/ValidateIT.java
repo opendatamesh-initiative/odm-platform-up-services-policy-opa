@@ -36,7 +36,6 @@ public class ValidateIT extends PolicyserviceOpaApplicationIT {
         assertThat(validationResponse.getBody().get("result")).isNotNull();
 
         // TEST 2: validate document1 with a single policy
-        //ResponseEntity<ValidateResponse> validationResponse2 = rest.validateDocumentByPoliciesIds(DOCUMENT_1, "dataproduct");
         ResponseEntity<ValidateResponse> validationResponse2 = client.validateDocumentByPoliciesIds(document1, "dataproduct");
         assertThat(validationResponse2.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
         assertThat(validationResponse2.getBody().getValidatedPolicies().size()).isEqualTo(1);

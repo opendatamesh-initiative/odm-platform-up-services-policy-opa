@@ -124,15 +124,6 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
         createPolicy1();
         createPolicy2();
 
-        /*
-        // OLD WAY:
-        ResponseEntity<PolicyResource[]> getPolicyResponse = rest.readAllPolicies();
-        PolicyResource[] policyResources = getPolicyResponse.getBody();
-
-        //TODO: the ResponseEntity still needs to be verified in another test (or embedded in tests)
-        verifyResponseEntity(getPolicyResponse, HttpStatus.OK, true);
-        */
-        //NEW WAY:
         ResponseEntity<PolicyResource[]> policyResources = client.readPolicies();
 
         assert policyResources.getBody() != null;
