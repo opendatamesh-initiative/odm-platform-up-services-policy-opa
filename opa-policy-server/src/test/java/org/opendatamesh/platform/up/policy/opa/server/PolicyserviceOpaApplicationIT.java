@@ -2,6 +2,7 @@ package org.opendatamesh.platform.up.policy.opa.server;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.runner.RunWith;
+import org.opendatamesh.platform.up.policy.api.v1.clients.PolicyServiceClient;
 import org.opendatamesh.platform.up.policy.api.v1.errors.PolicyserviceOpaAPIStandardError;
 import org.opendatamesh.platform.up.policy.api.v1.resources.ErrorResource;
 import org.opendatamesh.platform.up.policy.api.v1.resources.PolicyResource;
@@ -11,9 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -27,7 +26,12 @@ public abstract class PolicyserviceOpaApplicationIT {
 	@LocalServerPort
 	protected String port;
 
-	protected PolicyserviceOpaApplicationITRestTemplate rest;
+	// RestTemplate will be removed once client will be fully developed
+	//protected PolicyserviceOpaApplicationITRestTemplate rest;
+
+	protected PolicyServiceClient client;
+
+	protected ResourceBuilder rb;
 
 	protected final String POLICY_1 = "src/test/resources/policies/policy1.json";
 
@@ -49,39 +53,12 @@ public abstract class PolicyserviceOpaApplicationIT {
 
 	protected final String DPD = "src/test/resources/documents/dpd.json";
 
-
-	@Autowired
-	protected ObjectMapper mapper;
-
 	@PostConstruct
 	public final void init() {
-		rest = new PolicyserviceOpaApplicationITRestTemplate(mapper);
-		rest.setPort(port);
-		HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
-		rest.getRestTemplate().setRequestFactory(requestFactory);
-		// add uri template handler because '+' of iso date would not be encoded
-		DefaultUriBuilderFactory defaultUriBuilderFactory = new DefaultUriBuilderFactory();
-		defaultUriBuilderFactory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.TEMPLATE_AND_VALUES);
-		rest.setUriTemplateHandler(defaultUriBuilderFactory);
-	}
 
-	// ======================================================================================
-	// Url builder utils
-	// ======================================================================================
-	protected String apiUrl(RoutesV1 route) {
-		return apiUrl(route, "");
-	}
+		client = new PolicyServiceClient("http://localhost:" + port);
 
-	protected String apiUrl(RoutesV1 route, String extension) {
-		return apiUrlFromString(route.getPath() + extension);
-	}
-
-	protected String apiUrlFromString(String routeUrlString) {
-		return "http://localhost:" + port + routeUrlString;
-	}
-
-	protected String apiUrlOfItem(RoutesV1 route) {
-		return apiUrl(route, "/{id}");
+		rb = new ResourceBuilder();
 	}
 
 	// ======================================================================================
@@ -89,7 +66,10 @@ public abstract class PolicyserviceOpaApplicationIT {
 	// ======================================================================================
 
 	protected PolicyResource createPolicy1() throws IOException {
-		ResponseEntity<PolicyResource> postPolicyResponse = rest.createPolicy(POLICY_1);
+
+		PolicyResource pr = rb.readResourceFromFile(POLICY_1,PolicyResource.class);
+		ResponseEntity<PolicyResource> postPolicyResponse = client.createPolicy(pr);
+
 		verifyResponseEntity(postPolicyResponse, HttpStatus.CREATED, true);
 
 		return postPolicyResponse.getBody();
@@ -97,7 +77,9 @@ public abstract class PolicyserviceOpaApplicationIT {
 	}
 
 	protected PolicyResource createPolicy2() throws IOException {
-		ResponseEntity<PolicyResource> postPolicyResponse = rest.createPolicy(POLICY_2);
+
+		PolicyResource pr = rb.readResourceFromFile(POLICY_2,PolicyResource.class);
+		ResponseEntity<PolicyResource> postPolicyResponse = client.createPolicy(pr);
 		verifyResponseEntity(postPolicyResponse, HttpStatus.CREATED, true);
 
 		return postPolicyResponse.getBody();
@@ -105,7 +87,8 @@ public abstract class PolicyserviceOpaApplicationIT {
 	}
 
 	protected PolicyResource createPolicyVersions() throws IOException {
-		ResponseEntity<PolicyResource> postPolicyResponse = rest.createPolicy(POLICY_VERSIONS);
+		PolicyResource pr = rb.readResourceFromFile(POLICY_VERSIONS,PolicyResource.class);
+		ResponseEntity<PolicyResource> postPolicyResponse = client.createPolicy(pr);
 		verifyResponseEntity(postPolicyResponse, HttpStatus.CREATED, true);
 
 		return postPolicyResponse.getBody();
@@ -113,7 +96,8 @@ public abstract class PolicyserviceOpaApplicationIT {
 	}
 
 	protected PolicyResource createPolicyServicesType() throws IOException {
-		ResponseEntity<PolicyResource> postPolicyResponse = rest.createPolicy(POLICY_SERVICESTYPE);
+		PolicyResource pr = rb.readResourceFromFile(POLICY_SERVICESTYPE,PolicyResource.class);
+		ResponseEntity<PolicyResource> postPolicyResponse = client.createPolicy(pr);
 		verifyResponseEntity(postPolicyResponse, HttpStatus.CREATED, true);
 
 		return postPolicyResponse.getBody();
@@ -121,7 +105,8 @@ public abstract class PolicyserviceOpaApplicationIT {
 	}
 
 	protected PolicyResource updatePolicy1() throws IOException {
-		ResponseEntity<PolicyResource> postPolicyResponse = rest.updatePolicy("dataproduct", POLICY_1_UPDATED);
+		PolicyResource pr = rb.readResourceFromFile(POLICY_1_UPDATED,PolicyResource.class);
+		ResponseEntity<PolicyResource> postPolicyResponse = client.updatePolicy("dataproduct", pr);
 		verifyResponseEntity(postPolicyResponse, HttpStatus.OK, true);
 
 		return postPolicyResponse.getBody();
@@ -129,7 +114,9 @@ public abstract class PolicyserviceOpaApplicationIT {
 
 
 	protected SuiteResource createSuite1() throws IOException {
-		ResponseEntity<SuiteResource> postSuiteResponse = rest.createSuite(SUITE_1);
+
+		SuiteResource sr = rb.readResourceFromFile(SUITE_1,SuiteResource.class);
+		ResponseEntity<SuiteResource> postSuiteResponse = client.createSuite(sr);
 		verifyResponseEntity(postSuiteResponse, HttpStatus.CREATED, true);
 
 		return postSuiteResponse.getBody();

@@ -28,39 +28,44 @@ public class ValidateIT extends PolicyserviceOpaApplicationIT {
         createSuite1();
 
         // TEST 1: validate document1 with all policies
-        ResponseEntity<Map> validationResponse = rest.validateDocument(DOCUMENT_1);
+        Object document1 = rb.readResourceFromFile(DOCUMENT_1, Object.class);
+
+        ResponseEntity<Map> validationResponse = client.validateDocument(document1);
         assertThat(validationResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
         assertThat(validationResponse.getBody().get("decision_id")).isNotNull();
         assertThat(validationResponse.getBody().get("result")).isNotNull();
 
         // TEST 2: validate document1 with a single policy
-        ResponseEntity<ValidateResponse> validationResponse2 = rest.validateDocumentByPoliciesIds(DOCUMENT_1, "dataproduct");
+        ResponseEntity<ValidateResponse> validationResponse2 = client.validateDocumentByPoliciesIds(document1, "dataproduct");
         assertThat(validationResponse2.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
         assertThat(validationResponse2.getBody().getValidatedPolicies().size()).isEqualTo(1);
         assertThat(validationResponse2.getBody().getValidatedPolicies().get(0).getPolicy()).isEqualTo("dataproduct");
 
         // TEST 2: validate document1 with 2 policies
-        validationResponse2 = rest.validateDocumentByPoliciesIds(DOCUMENT_1, "dataproduct,xpolicy");
+        validationResponse2 = client.validateDocumentByPoliciesIds(document1, "dataproduct,xpolicy");
         assertThat(validationResponse2.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
         assertThat(validationResponse2.getBody().getValidatedPolicies().size()).isEqualTo(2);
         assertThat(validationResponse2.getBody().getValidatedPolicies().get(0).getPolicy()).isEqualTo("dataproduct");
         assertThat(validationResponse2.getBody().getValidatedPolicies().get(1).getPolicy()).isEqualTo("xpolicy");
 
         // TEST 3: validate document1 with a suite of policies
-        validationResponse2 = rest.validateDocumentBySuite(DOCUMENT_1, "odm-suite");
+        validationResponse2 = client.validateDocumentBySuiteId(document1, "odm-suite");
         assertThat(validationResponse2.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
         assertThat(validationResponse2.getBody().getValidatedSuites().size()).isEqualTo(1);
         assertThat(validationResponse2.getBody().getValidatedSuites().get(0).getSuite()).isEqualTo("odm-suite");
 
         // TEST 4: validate document "dpd" with policy "policy-versions" comparing major version and outputPorts.version
-        validationResponse2 = rest.validateDocumentByPoliciesIds(DPD, "versions");
+
+        Object dpd = rb.readResourceFromFile(DPD, Object.class);
+        validationResponse2 = client.validateDocumentByPoliciesIds(dpd, "versions");
         assertThat(validationResponse2.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
         assertThat(validationResponse2.getBody().getValidatedPolicies().size()).isEqualTo(1);
         assertThat(validationResponse2.getBody().getValidatedPolicies().get(0).getPolicy()).isEqualTo("versions");
         assertThat(validationResponse2.getBody().getValidatedPolicies().get(0).getValidationResult().toString()).contains("allow=true");
 
         // TEST 5: validate document "document-servicestype" with policy "policy-servicestype" checking servicesType of promises
-        validationResponse2 = rest.validateDocumentByPoliciesIds(DOCUMENT_2, "servicestype");
+        Object document2 = rb.readResourceFromFile(DOCUMENT_2, Object.class);
+        validationResponse2 = client.validateDocumentByPoliciesIds(document2 , "servicestype");
         assertThat(validationResponse2.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
         assertThat(validationResponse2.getBody().getValidatedPolicies().size()).isEqualTo(1);
         assertThat(validationResponse2.getBody().getValidatedPolicies().get(0).getPolicy()).isEqualTo("servicestype");

@@ -1,11 +1,10 @@
 package org.opendatamesh.platform.up.policy.opa.server;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.Test;
 import org.opendatamesh.platform.up.policy.api.v1.errors.PolicyserviceOpaAPIStandardError;
 import org.opendatamesh.platform.up.policy.api.v1.resources.ErrorResource;
 import org.opendatamesh.platform.up.policy.api.v1.resources.PolicyResource;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
@@ -48,11 +47,7 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
         PolicyResource policyResource = createPolicy1();
         ResponseEntity<ErrorResource> errorResponse = null;
 
-        errorResponse = rest.postForEntity(
-                apiUrl(RoutesV1.POLICY),
-                policyResource,
-                ErrorResource.class
-        );
+        errorResponse = client.createPolicy((PolicyResource) policyResource);
         verifyResponseError(
                 errorResponse,
                 HttpStatus.BAD_REQUEST,
@@ -87,16 +82,10 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
 
         cleanState();
 
-        HttpEntity<PolicyResource> entity = rest.getPolicyFileAsHttpEntity(POLICY_3);
+        PolicyResource entity = rb.readResourceFromFile(POLICY_3,PolicyResource.class);
         ResponseEntity<ErrorResource> errorResponse = null;
 
-        errorResponse = rest.exchange(
-                apiUrlOfItem(RoutesV1.POLICY),
-                HttpMethod.PUT,
-                entity,
-                ErrorResource.class,
-                "wrongid"
-        );
+        errorResponse = client.updatePolicy("wrongid",entity);
         verifyResponseError(
                 errorResponse,
                 HttpStatus.BAD_REQUEST,
@@ -111,16 +100,10 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
 
         cleanState();
 
-        HttpEntity<PolicyResource> entity = rest.getPolicyFileAsHttpEntity(POLICY_3);
+        PolicyResource entity = rb.readResourceFromFile(POLICY_3,PolicyResource.class);
         ResponseEntity<ErrorResource> errorResponse = null;
 
-        errorResponse = rest.exchange(
-                apiUrlOfItem(RoutesV1.POLICY),
-                HttpMethod.PUT,
-                entity,
-                ErrorResource.class,
-                "test"
-        );
+        errorResponse = client.updatePolicy("test",entity);
         verifyResponseError(
                 errorResponse,
                 HttpStatus.NOT_FOUND,
@@ -141,13 +124,12 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
         createPolicy1();
         createPolicy2();
 
-        ResponseEntity<PolicyResource[]> getPolicyResponse = rest.readAllPolicies();
-        PolicyResource[] policyResources = getPolicyResponse.getBody();
-        verifyResponseEntity(getPolicyResponse, HttpStatus.OK, true);
+        ResponseEntity<PolicyResource[]> policyResources = client.readPolicies();
 
-        assertThat(getPolicyResponse.getBody().length).isEqualTo(2);
-        assertThat(policyResources[0].getId()).isEqualTo("dataproduct");
-        assertThat(policyResources[1].getId()).isEqualTo("xpolicy");
+        assert policyResources.getBody() != null;
+        assertThat(policyResources.getBody().length).isEqualTo(2);
+        assertThat(policyResources.getBody()[0].getId()).isEqualTo("dataproduct");
+        assertThat(policyResources.getBody()[1].getId()).isEqualTo("xpolicy");
 
     }
 
@@ -159,7 +141,7 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
 
         createPolicy1();
 
-        ResponseEntity<PolicyResource> getPolicyResponse = rest.readOnePolicy("dataproduct");
+        ResponseEntity<PolicyResource> getPolicyResponse = client.readOnePolicy("dataproduct");
         PolicyResource policyResource = getPolicyResponse.getBody();
         verifyResponseEntity(getPolicyResponse, HttpStatus.OK, true);
 
@@ -169,19 +151,13 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void testPoliciesReadOneError404() {
+    public void testPoliciesReadOneError404() throws JsonProcessingException {
 
         cleanState();
 
         ResponseEntity<ErrorResource> errorResponse = null;
 
-        errorResponse = rest.exchange(
-                apiUrlOfItem(RoutesV1.POLICY),
-                HttpMethod.GET,
-                null,
-                ErrorResource.class,
-                "dataproduct"
-        );
+        errorResponse = client.readOnePolicy("dataproduct");
 
         verifyResponseError(errorResponse, HttpStatus.NOT_FOUND, PolicyserviceOpaAPIStandardError.SC404_POLICY_NOT_FOUND);
 
@@ -200,7 +176,7 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
 
         PolicyResource policy = createPolicy1();
 
-        ResponseEntity<Void> getPolicyResponse = rest.deletePolicy(policy.getId());
+        ResponseEntity<Void> getPolicyResponse = client.deletePolicy(policy.getId());
         verifyResponseEntity(getPolicyResponse, HttpStatus.OK, false);
 
     }
@@ -213,13 +189,7 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
 
         ResponseEntity<ErrorResource> errorResponse = null;
 
-        errorResponse = rest.exchange(
-                apiUrlOfItem(RoutesV1.POLICY),
-                HttpMethod.DELETE,
-                null,
-                ErrorResource.class,
-                "notanid"
-        );
+        errorResponse = client.deletePolicy("notanid");
 
         verifyResponseError(
                 errorResponse,
@@ -233,12 +203,12 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
     // ----------------------------------------
     // Clean state for each test: empty DB
     // ----------------------------------------
-    private void cleanState() {
+    private void cleanState() throws JsonProcessingException {
 
-        ResponseEntity<PolicyResource[]> policies = rest.readAllPolicies();
+        ResponseEntity<PolicyResource[]> policies = client.readPolicies();
         PolicyResource[] policyResources = policies.getBody();
         for (PolicyResource policyResource : policyResources) {
-            rest.deletePolicy(policyResource.getId());
+            client.deletePolicy(policyResource.getId());
         }
 
     }

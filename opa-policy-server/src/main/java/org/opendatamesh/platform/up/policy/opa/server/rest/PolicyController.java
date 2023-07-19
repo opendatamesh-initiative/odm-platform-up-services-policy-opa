@@ -146,7 +146,7 @@ public class PolicyController extends AbstrPolicyController {
     }
 
     @Override
-    public void deletePolicy(String id) {
+    public ResponseEntity deletePolicy(String id) {
         // Check if policy does not exist on DB
         if (!pr.existsById(id)) {
             throw new NotFoundException(
@@ -185,6 +185,9 @@ public class PolicyController extends AbstrPolicyController {
 
         // Delete policy on internal DB
         pr.deleteById(id);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(Void.class);
     }
 
 }

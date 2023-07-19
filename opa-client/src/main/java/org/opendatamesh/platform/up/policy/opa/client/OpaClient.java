@@ -1,7 +1,6 @@
 package org.opendatamesh.platform.up.policy.opa.client;
 
 import org.opendatamesh.platform.up.policy.opa.client.resources.v1.ValidateRequest;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
