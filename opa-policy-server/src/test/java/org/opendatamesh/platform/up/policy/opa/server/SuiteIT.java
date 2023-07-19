@@ -1,7 +1,7 @@
 package org.opendatamesh.platform.up.policy.opa.server;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.opendatamesh.platform.up.policy.api.v1.enums.PatchModes;
 import org.opendatamesh.platform.up.policy.api.v1.errors.PolicyserviceOpaAPIStandardError;
 import org.opendatamesh.platform.up.policy.api.v1.resources.ErrorResource;
@@ -28,8 +28,6 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void testSuiteCreate() throws IOException {
 
-        cleanState();
-
         // TEST 1: create a Suite with all properties and verify the response
         SuiteResource suiteResource = createSuite1();
         assertThat(suiteResource.getId()).isEqualTo("odm-suite");
@@ -42,8 +40,6 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void testSuiteCreateError400() throws IOException {
-
-        cleanState();
 
         SuiteResource suiteResource = createSuite1();
         ResponseEntity<ErrorResource> errorResponse = null;
@@ -64,8 +60,6 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void testSuiteUpdate() throws IOException {
-
-        cleanState();
 
         createSuite1();
 
@@ -102,7 +96,6 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
 
         ResponseEntity<ErrorResource> errorResponse = null;
 
-
         errorResponse = client.updateSuite("not-a-suite",PatchModes.ADD,"newpolicy");
         verifyResponseError(
                 errorResponse,
@@ -121,8 +114,6 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void testSuitesReadAll() throws IOException {
 
-        cleanState();
-
         createSuite1();
 
         ResponseEntity<SuiteResource[]> getSuiteResponse = client.readSuites();
@@ -137,8 +128,6 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void testSuiteReadOne() throws IOException {
-
-        cleanState();
 
         createSuite1();
 
@@ -157,8 +146,6 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void testSuiteReadOneError404() throws JsonProcessingException {
 
-        cleanState();
-
         ResponseEntity<ErrorResource> errorResponse = null;
 
         errorResponse = client.readOneSuite("odm-suite");
@@ -176,8 +163,6 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void testSuiteDelete() throws IOException {
 
-        cleanState();
-
         SuiteResource suiteResource = createSuite1();
 
         ResponseEntity<String> deletePolicyResponse = client.deleteSuite(suiteResource.getId());
@@ -189,8 +174,6 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void testSuiteDeleteError404() throws IOException {
 
-        cleanState();
-
         ResponseEntity<ErrorResource> errorResponse = null;
 
         errorResponse = client.deleteSuite("notanid");
@@ -200,20 +183,6 @@ public class SuiteIT extends PolicyserviceOpaApplicationIT {
                 HttpStatus.NOT_FOUND,
                 PolicyserviceOpaAPIStandardError.SC404_SUITE_NOT_FOUND
         );
-
-    }
-
-
-    // ----------------------------------------
-    // Clean state for each test: empty DB
-    // ----------------------------------------
-    private void cleanState() throws JsonProcessingException {
-
-        ResponseEntity<SuiteResource[]> suites = client.readSuites();
-        SuiteResource[] suiteResources = suites.getBody();
-        for (SuiteResource suiteResource : suiteResources) {
-            client.deleteSuite(suiteResource.getId());
-        }
 
     }
 

@@ -1,25 +1,31 @@
 package org.opendatamesh.platform.up.policy.opa.server;
 
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.opendatamesh.platform.up.policy.api.v1.clients.PolicyServiceClient;
 import org.opendatamesh.platform.up.policy.api.v1.errors.PolicyserviceOpaAPIStandardError;
 import org.opendatamesh.platform.up.policy.api.v1.resources.ErrorResource;
 import org.opendatamesh.platform.up.policy.api.v1.resources.PolicyResource;
 import org.opendatamesh.platform.up.policy.api.v1.resources.SuiteResource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.jdbc.JdbcTestUtils;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
-@ActiveProfiles("testmysql")
+@ExtendWith(SpringExtension.class)
+@ActiveProfiles("testpostgresql")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = { PolicyserviceOpaApplication.class })
 public abstract class PolicyserviceOpaApplicationIT {
 
@@ -28,7 +34,7 @@ public abstract class PolicyserviceOpaApplicationIT {
 
 	protected PolicyServiceClient client;
 
-	protected ResourceBuilder rb;
+	protected ResourceBuilder resourceBuilder;
 
 	protected final String POLICY_1 = "src/test/resources/policies/policy1.json";
 
@@ -52,10 +58,27 @@ public abstract class PolicyserviceOpaApplicationIT {
 
 	@PostConstruct
 	public final void init() {
-
 		client = new PolicyServiceClient("http://localhost:" + port);
+		resourceBuilder = new ResourceBuilder();
+	}
 
-		rb = new ResourceBuilder();
+	@BeforeEach
+	public void cleanDbState(@Autowired JdbcTemplate jdbcTemplate, @Autowired Environment environment) {
+		if(Arrays.stream(environment.getActiveProfiles()).findFirst().get().equals("testpostgresql")) {
+			JdbcTestUtils.deleteFromTables(
+					jdbcTemplate,
+					"\"ODMPOLICY\".\"POLICY\"",
+					"\"ODMPOLICY\".\"SUITE\"",
+					"\"ODMPOLICY\".\"SuiteEntity_policies\""
+			);
+		} else if (Arrays.stream(environment.getActiveProfiles()).findFirst().get().equals("testmysql")) {
+			JdbcTestUtils.deleteFromTables(
+					jdbcTemplate,
+					"ODMPOLICY.POLICY",
+					"ODMPOLICY.SUITE",
+					"ODMPOLICY.SUITEENTITY_POLICIES"
+			);
+		}
 	}
 
 	// ======================================================================================
@@ -64,7 +87,7 @@ public abstract class PolicyserviceOpaApplicationIT {
 
 	protected PolicyResource createPolicy1() throws IOException {
 
-		PolicyResource pr = rb.readResourceFromFile(POLICY_1,PolicyResource.class);
+		PolicyResource pr = resourceBuilder.readResourceFromFile(POLICY_1,PolicyResource.class);
 		ResponseEntity<PolicyResource> postPolicyResponse = client.createPolicy(pr);
 
 		verifyResponseEntity(postPolicyResponse, HttpStatus.CREATED, true);
@@ -75,7 +98,7 @@ public abstract class PolicyserviceOpaApplicationIT {
 
 	protected PolicyResource createPolicy2() throws IOException {
 
-		PolicyResource pr = rb.readResourceFromFile(POLICY_2,PolicyResource.class);
+		PolicyResource pr = resourceBuilder.readResourceFromFile(POLICY_2,PolicyResource.class);
 		ResponseEntity<PolicyResource> postPolicyResponse = client.createPolicy(pr);
 		verifyResponseEntity(postPolicyResponse, HttpStatus.CREATED, true);
 
@@ -84,7 +107,7 @@ public abstract class PolicyserviceOpaApplicationIT {
 	}
 
 	protected PolicyResource createPolicyVersions() throws IOException {
-		PolicyResource pr = rb.readResourceFromFile(POLICY_VERSIONS,PolicyResource.class);
+		PolicyResource pr = resourceBuilder.readResourceFromFile(POLICY_VERSIONS,PolicyResource.class);
 		ResponseEntity<PolicyResource> postPolicyResponse = client.createPolicy(pr);
 		verifyResponseEntity(postPolicyResponse, HttpStatus.CREATED, true);
 
@@ -93,7 +116,7 @@ public abstract class PolicyserviceOpaApplicationIT {
 	}
 
 	protected PolicyResource createPolicyServicesType() throws IOException {
-		PolicyResource pr = rb.readResourceFromFile(POLICY_SERVICESTYPE,PolicyResource.class);
+		PolicyResource pr = resourceBuilder.readResourceFromFile(POLICY_SERVICESTYPE,PolicyResource.class);
 		ResponseEntity<PolicyResource> postPolicyResponse = client.createPolicy(pr);
 		verifyResponseEntity(postPolicyResponse, HttpStatus.CREATED, true);
 
@@ -102,7 +125,7 @@ public abstract class PolicyserviceOpaApplicationIT {
 	}
 
 	protected PolicyResource updatePolicy1() throws IOException {
-		PolicyResource pr = rb.readResourceFromFile(POLICY_1_UPDATED,PolicyResource.class);
+		PolicyResource pr = resourceBuilder.readResourceFromFile(POLICY_1_UPDATED,PolicyResource.class);
 		ResponseEntity<PolicyResource> postPolicyResponse = client.updatePolicy("dataproduct", pr);
 		verifyResponseEntity(postPolicyResponse, HttpStatus.OK, true);
 
@@ -112,7 +135,7 @@ public abstract class PolicyserviceOpaApplicationIT {
 
 	protected SuiteResource createSuite1() throws IOException {
 
-		SuiteResource sr = rb.readResourceFromFile(SUITE_1,SuiteResource.class);
+		SuiteResource sr = resourceBuilder.readResourceFromFile(SUITE_1,SuiteResource.class);
 		ResponseEntity<SuiteResource> postSuiteResponse = client.createSuite(sr);
 		verifyResponseEntity(postSuiteResponse, HttpStatus.CREATED, true);
 

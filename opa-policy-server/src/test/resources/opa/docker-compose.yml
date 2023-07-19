@@ -3,11 +3,7 @@ services:
   opa:
     image: openpolicyagent/opa:latest-rootless
     ports:
-      - published: 8181
-        target: 8181
-    expose:
-      - 8181
-    network_mode: "host"
+      - 8181:8181
     command:
       - "run"
       - "--server"

@@ -1,6 +1,6 @@
 package org.opendatamesh.platform.up.policy.opa.server;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.opendatamesh.platform.up.policy.api.v1.resources.ValidateResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +28,7 @@ public class ValidateIT extends PolicyserviceOpaApplicationIT {
         createSuite1();
 
         // TEST 1: validate document1 with all policies
-        Object document1 = rb.readResourceFromFile(DOCUMENT_1, Object.class);
+        Object document1 = resourceBuilder.readResourceFromFile(DOCUMENT_1, Object.class);
 
         ResponseEntity<Map> validationResponse = client.validateDocument(document1);
         assertThat(validationResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
@@ -56,7 +56,7 @@ public class ValidateIT extends PolicyserviceOpaApplicationIT {
 
         // TEST 4: validate document "dpd" with policy "policy-versions" comparing major version and outputPorts.version
 
-        Object dpd = rb.readResourceFromFile(DPD, Object.class);
+        Object dpd = resourceBuilder.readResourceFromFile(DPD, Object.class);
         validationResponse2 = client.validateDocumentByPoliciesIds(dpd, "versions");
         assertThat(validationResponse2.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
         assertThat(validationResponse2.getBody().getValidatedPolicies().size()).isEqualTo(1);
@@ -64,7 +64,7 @@ public class ValidateIT extends PolicyserviceOpaApplicationIT {
         assertThat(validationResponse2.getBody().getValidatedPolicies().get(0).getValidationResult().toString()).contains("allow=true");
 
         // TEST 5: validate document "document-servicestype" with policy "policy-servicestype" checking servicesType of promises
-        Object document2 = rb.readResourceFromFile(DOCUMENT_2, Object.class);
+        Object document2 = resourceBuilder.readResourceFromFile(DOCUMENT_2, Object.class);
         validationResponse2 = client.validateDocumentByPoliciesIds(document2 , "servicestype");
         assertThat(validationResponse2.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
         assertThat(validationResponse2.getBody().getValidatedPolicies().size()).isEqualTo(1);

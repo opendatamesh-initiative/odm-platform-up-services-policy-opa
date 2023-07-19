@@ -1,7 +1,7 @@
 package org.opendatamesh.platform.up.policy.opa.server;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.opendatamesh.platform.up.policy.api.v1.errors.PolicyserviceOpaAPIStandardError;
 import org.opendatamesh.platform.up.policy.api.v1.resources.ErrorResource;
 import org.opendatamesh.platform.up.policy.api.v1.resources.PolicyResource;
@@ -27,8 +27,6 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void testPolicyCreate() throws IOException {
 
-        cleanState();
-
         // Create a Policy with all properties and verify the response
         PolicyResource policyResource = createPolicy1();
         assertThat(policyResource.getId()).isEqualTo("dataproduct");
@@ -41,8 +39,6 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void testPolicyCreateError400() throws IOException {
-
-        cleanState();
 
         PolicyResource policyResource = createPolicy1();
         ResponseEntity<ErrorResource> errorResponse = null;
@@ -64,8 +60,6 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void testPolicyUpdate() throws IOException {
 
-        cleanState();
-
         createPolicy1();
         PolicyResource policyResourceUpdated = updatePolicy1();
 
@@ -80,9 +74,7 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void testPolicyUpdateError400() throws IOException {
 
-        cleanState();
-
-        PolicyResource entity = rb.readResourceFromFile(POLICY_3,PolicyResource.class);
+        PolicyResource entity = resourceBuilder.readResourceFromFile(POLICY_3,PolicyResource.class);
         ResponseEntity<ErrorResource> errorResponse = null;
 
         errorResponse = client.updatePolicy("wrongid",entity);
@@ -98,9 +90,7 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void testPolicyUpdateError404() throws IOException {
 
-        cleanState();
-
-        PolicyResource entity = rb.readResourceFromFile(POLICY_3,PolicyResource.class);
+        PolicyResource entity = resourceBuilder.readResourceFromFile(POLICY_3,PolicyResource.class);
         ResponseEntity<ErrorResource> errorResponse = null;
 
         errorResponse = client.updatePolicy("test",entity);
@@ -119,8 +109,6 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void testPoliciesReadAll() throws IOException {
 
-        cleanState();
-
         createPolicy1();
         createPolicy2();
 
@@ -137,8 +125,6 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void testPoliciesReadOne() throws IOException {
 
-        cleanState();
-
         createPolicy1();
 
         ResponseEntity<PolicyResource> getPolicyResponse = client.readOnePolicy("dataproduct");
@@ -152,8 +138,6 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void testPoliciesReadOneError404() throws JsonProcessingException {
-
-        cleanState();
 
         ResponseEntity<ErrorResource> errorResponse = null;
 
@@ -172,8 +156,6 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void testPoliciesDelete() throws IOException {
 
-        cleanState();
-
         PolicyResource policy = createPolicy1();
 
         ResponseEntity<Void> getPolicyResponse = client.deletePolicy(policy.getId());
@@ -185,8 +167,6 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void testPoliciesDeleteError404() throws IOException {
 
-        cleanState();
-
         ResponseEntity<ErrorResource> errorResponse = null;
 
         errorResponse = client.deletePolicy("notanid");
@@ -196,20 +176,6 @@ public class PolicyIT extends PolicyserviceOpaApplicationIT {
                 HttpStatus.NOT_FOUND,
                 PolicyserviceOpaAPIStandardError.SC404_POLICY_NOT_FOUND
         );
-
-    }
-
-
-    // ----------------------------------------
-    // Clean state for each test: empty DB
-    // ----------------------------------------
-    private void cleanState() throws JsonProcessingException {
-
-        ResponseEntity<PolicyResource[]> policies = client.readPolicies();
-        PolicyResource[] policyResources = policies.getBody();
-        for (PolicyResource policyResource : policyResources) {
-            client.deletePolicy(policyResource.getId());
-        }
 
     }
 
