@@ -1,17 +1,16 @@
 package org.opendatamesh.platform.up.policy.opa.server;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.runner.RunWith;
 import org.opendatamesh.platform.up.policy.api.v1.clients.PolicyServiceClient;
 import org.opendatamesh.platform.up.policy.api.v1.errors.PolicyserviceOpaAPIStandardError;
 import org.opendatamesh.platform.up.policy.api.v1.resources.ErrorResource;
 import org.opendatamesh.platform.up.policy.api.v1.resources.PolicyResource;
 import org.opendatamesh.platform.up.policy.api.v1.resources.SuiteResource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.PostConstruct;
@@ -20,14 +19,12 @@ import java.io.IOException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
+@ActiveProfiles("testmysql")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = { PolicyserviceOpaApplication.class })
 public abstract class PolicyserviceOpaApplicationIT {
 
 	@LocalServerPort
 	protected String port;
-
-	// RestTemplate will be removed once client will be fully developed
-	//protected PolicyserviceOpaApplicationITRestTemplate rest;
 
 	protected PolicyServiceClient client;
 

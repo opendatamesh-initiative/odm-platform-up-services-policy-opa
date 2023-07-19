@@ -13,7 +13,7 @@ import java.util.Map;
 public class OPAPolicyService {
 
     @Autowired
-    OpaClient opaClient; //= new OpaClient(policiesUrl);
+    OpaClient opaClient;
 
     public Iterable<PolicyResource> getAllOPAPolicies(){
 

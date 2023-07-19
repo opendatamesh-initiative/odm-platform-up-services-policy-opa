@@ -4,10 +4,10 @@ services:
     image: mysql:8
     restart: always
     environment:
-      MYSQL_DATABASE: 'mydb'
-      MYSQL_USER: 'db'
-      MYSQL_PASSWORD: 'admin'
-      MYSQL_ROOT_PASSWORD: 'admin'
+      MYSQL_DATABASE: 'ODMPOLICY'
+      #MYSQL_USER: 'root'
+      #MYSQL_PASSWORD: 'root'
+      MYSQL_ROOT_PASSWORD: 'root'
     ports:
       - published: 3306
         target: 3306
