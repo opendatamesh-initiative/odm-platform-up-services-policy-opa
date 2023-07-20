@@ -15,16 +15,29 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.jdbc.JdbcTestUtils;
+import org.testcontainers.containers.DockerComposeContainer;
+import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.containers.wait.strategy.WaitStrategy;
+import org.testcontainers.containers.wait.strategy.WaitStrategyTarget;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
+@Testcontainers
 @ActiveProfiles("testpostgresql")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = { PolicyserviceOpaApplication.class })
 public abstract class PolicyserviceOpaApplicationIT {
@@ -55,6 +68,44 @@ public abstract class PolicyserviceOpaApplicationIT {
 	protected final String DOCUMENT_2 = "src/test/resources/documents/document-servicestype.json";
 
 	protected final String DPD = "src/test/resources/documents/dpd.json";
+
+	/*@Container
+	private static final DockerComposeContainer opaServer =
+			new DockerComposeContainer(new File("src/test/resources/opa/docker-compose.yml"))
+					.withExposedService("opa", 8181);*/
+
+	// private/protected to make it recreate for each test
+	// private/protected static final to make it shared with all tests
+	@Container
+	/*protected static final GenericContainer opaServer =
+			new GenericContainer(DockerImageName.parse("openpolicyagent/opa:latest-rootless"))
+					//.withCreateContainerCmdModifier()
+					//.withCommand("run --server --log-level=debug --log-format=json-pretty --set=decision_logs.console=true")
+					//.withCommand("run")
+					//.withCommand("--server")
+					//.withCommand("--log-level=debug")
+					.waitingFor(Wait.forLogMessage(".*Server initialized.", 1));
+					//.withExposedPorts(8181);
+					//.withCommand("--log-level=debug")
+					//.withCommand("--log-format=json-pretty")
+					//.withCommand("--set=decision_logs.console=true")
+					//.withExposedPorts(8181)
+					//.withNetworkMode("host")
+					//.withStartupTimeout(Duration.ofSeconds(30));
+					//.withReuse(true);*/
+	protected static final DockerComposeContainer opaServer =
+			new DockerComposeContainer(
+					new File("src/test/resources/opa/docker-compose.yml")
+			)
+					.withExposedService("opa", 8181);
+
+	@DynamicPropertySource
+    static void opaServerProperties(DynamicPropertyRegistry registry) {
+		String baseUrl = "http://localhost:" + opaServer.getServicePort("opa", 8181);
+		registry.add("opa.url.policies", () ->  baseUrl + "/v1/policies");
+		registry.add("opa.url.data", () -> baseUrl + "/v1/data");
+    }
+
 
 	@PostConstruct
 	public final void init() {
