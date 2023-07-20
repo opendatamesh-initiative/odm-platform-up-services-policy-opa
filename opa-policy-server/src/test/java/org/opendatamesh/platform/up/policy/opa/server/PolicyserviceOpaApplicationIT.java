@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(SpringExtension.class)
 @Testcontainers
 //@ActiveProfiles("dev")
-@ActiveProfiles("testpostgresql")
+//@ActiveProfiles("testpostgresql")
 //@ActiveProfiles("testmysql")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = { PolicyserviceOpaApplication.class })
 public abstract class PolicyserviceOpaApplicationIT {
