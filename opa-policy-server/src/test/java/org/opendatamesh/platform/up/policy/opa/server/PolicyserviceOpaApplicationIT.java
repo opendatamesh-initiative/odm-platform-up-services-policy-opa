@@ -38,7 +38,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @Testcontainers
+//@ActiveProfiles("dev")
 @ActiveProfiles("testpostgresql")
+//@ActiveProfiles("testmysql")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = { PolicyserviceOpaApplication.class })
 public abstract class PolicyserviceOpaApplicationIT {
 
@@ -69,34 +71,13 @@ public abstract class PolicyserviceOpaApplicationIT {
 
 	protected final String DPD = "src/test/resources/documents/dpd.json";
 
-	/*@Container
-	private static final DockerComposeContainer opaServer =
-			new DockerComposeContainer(new File("src/test/resources/opa/docker-compose.yml"))
-					.withExposedService("opa", 8181);*/
+	protected static final String OPA_DOCKER_IMAGE = "src/test/resources/opa/docker-compose.yml";
 
 	// private/protected to make it recreate for each test
 	// private/protected static final to make it shared with all tests
 	@Container
-	/*protected static final GenericContainer opaServer =
-			new GenericContainer(DockerImageName.parse("openpolicyagent/opa:latest-rootless"))
-					//.withCreateContainerCmdModifier()
-					//.withCommand("run --server --log-level=debug --log-format=json-pretty --set=decision_logs.console=true")
-					//.withCommand("run")
-					//.withCommand("--server")
-					//.withCommand("--log-level=debug")
-					.waitingFor(Wait.forLogMessage(".*Server initialized.", 1));
-					//.withExposedPorts(8181);
-					//.withCommand("--log-level=debug")
-					//.withCommand("--log-format=json-pretty")
-					//.withCommand("--set=decision_logs.console=true")
-					//.withExposedPorts(8181)
-					//.withNetworkMode("host")
-					//.withStartupTimeout(Duration.ofSeconds(30));
-					//.withReuse(true);*/
 	protected static final DockerComposeContainer opaServer =
-			new DockerComposeContainer(
-					new File("src/test/resources/opa/docker-compose.yml")
-			)
+			new DockerComposeContainer(new File(OPA_DOCKER_IMAGE))
 					.withExposedService("opa", 8181);
 
 	@DynamicPropertySource

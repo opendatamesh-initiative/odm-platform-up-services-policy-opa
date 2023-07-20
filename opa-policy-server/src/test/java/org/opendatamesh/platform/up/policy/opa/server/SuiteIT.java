@@ -17,9 +17,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class SuiteIT extends PolicyserviceOpaApplicationIT {
 
-    // Note: Tests NEED a running OPA server listening on Port 8181 to work
-    // Note: Edit run configurations and add environment variable SPRING_PROFILES_ACTIVE=dev
-
     // ----------------------------------------
     // CREATE Suite
     // ----------------------------------------
