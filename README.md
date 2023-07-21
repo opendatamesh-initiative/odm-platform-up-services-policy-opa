@@ -2,6 +2,8 @@
 
 Open Data Mesh Platform is a platform that manages the full lifecycle of a data product from deployment to retirement. It use the [Data Product Descriptor Specification](https://dpds.opendatamesh.org/) to to create, deploy and operate data product containers in a mesh architecture. This repository contains the services exposed by the utility policyservice plane.
 
+*_This project have dependencies from the project [odm-platform](https://github.com/opendatamesh-initiative/odm-platform)_
+
 # Run it
 
 ## Prerequisites
@@ -9,36 +11,56 @@ The project requires the following dependencies:
 
 * Java 11
 * Maven 3.8.6
+* Project  [odm-platform](https://github.com/opendatamesh-initiative/odm-platform)
+
+## Dependencies
+This project need some artifacts from the odm-platform project.
+
+### Clone dependencies repository
+Clone the repository and move to the project root folder
+
+```bash
+git git clone https://github.com/opendatamesh-initiative/odm-platform.git
+cd odm-platform-pp-services
+```
+
+### Compile dependencies
+Compile the project:
+
+```bash
+mvn clean install -DskipTests
+```
 
 ## Run locally
+*Dependencies must have been compiled to run this project.
 
 ### Clone repository
 Clone the repository and move to the project root folder
 
 ```bash
-git git clone git@bitbucket.org:quantyca/odm-plane-utility-policyservice-opa.git
-cd odm-plane-utility-policyservice-opa
+git git clone https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-opa.git
+cd odm-platform-up-services-policy-opa
 ```
 
 ### Compile project
 Compile the project:
 
 ```bash
-mvn clean package
+mvn clean package -DskipTests
 ```
 
 ### Run application
 Run the application:
 
 ```bash
-java -jar target/policyservice-opa-0.0.1-SNAPSHOT.jar
+java -jar opa-policy-server/target/odm-platform-up-services-policy-opa-0.0.1-SNAPSHOT.jar
 ```
 
 ### Stop application
 To stop the application type CTRL+C or just close the shell. To start it again re-execute the following command:
 
 ```bash
-java -jar target/policyservice-opa.0.0.1-SNAPSHOT.jar
+java -jar opa-policy-server/target/odm-platform-up-services-policy-opa-0.0.1-SNAPSHOT.jar
 ```
 *Note: The application run in this way uses an in-memory instance of the H2 database. For this reason, the data is lost every time the application is terminated. On the next restart, the database is recreated from scratch.*
 
@@ -46,27 +68,40 @@ java -jar target/policyservice-opa.0.0.1-SNAPSHOT.jar
 
 ## Run with Docker
 
+### Clone dependencies repository
+Clone the repository and move to the project root folder
+
+```bash
+git git clone https://github.com/opendatamesh-initiative/odm-platform.git
+cd odm-platform-pp-services
+```
+
+### Compile dependencies
+Compile the project:
+
+```bash
+mvn clean install -DskipTests
+```
+
 ### Clone repository
 Clone the repository and move it to the project root folder
 
 ```bash
-git git clone git@bitbucket.org:quantyca/odm-plane-utility-policyservice-opa.git
-cd odm-plane-utility-policyservice-opa
+git git clone https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-opa.git
+cd odm-platform-up-services-policy-opa
 ```
 
-Here you can find the following two Dockerfiles:
-* `Dockerfile`: This file creates a docker image containing the application built from the code present on the Git repository;
-* `Dockerfile.local`: This file creates an image containing the application by directly copying it from the build executed locally (i.e. from `target` folder).
+Here you can find the Dockerfile which creates an image containing the application by directly copying it from the build executed locally (i.e. from `target` folder).
 
 ### Compile project
-If you decide to create the Docker image using the second Dockerfile (i.e. `Dokerfile.local`), you need to first execute the build locally by running the following command:
+You need to first execute the build locally by running the following command:
 
 ```bash
-mvn clean package
+mvn clean package -DskipTests
 ```
 
 ### Run OPA server
-The image generated from both Dockerfiles contains only the application. It requires an OPA server to run properly. If you do not already have an OPA server available, you can create one by running the following commands:
+The image generated from Dockerfile contains only the application. It requires an OPA server to run properly. If you do not already have an OPA server available, you can create one by running the following commands:
 
 ```bash
 docker run --name odmopa-opa-server -d -p 8181:8181  \
@@ -84,12 +119,12 @@ docker logs odmopa-opa-server
 ```
 
 ### Run database
-The image generated from both Dockerfiles contains only the application. It requires a database to run properly. The supported databases are MySql and Postgres. If you do not already have a database available, you can create one by running the following commands:
+The image generated from Dockerfile contains only the application. It requires a database to run properly. The supported databases are MySql and Postgres. If you do not already have a database available, you can create one by running the following commands:
 
 **MySql**
 ```bash
 docker run --name odmopa-mysql-db -d -p 3306:3306  \
-   -e MYSQL_DATABASE=odmopadb \
+   -e MYSQL_DATABASE=ODMPOLICY \
    -e MYSQL_ROOT_PASSWORD=root \
    mysql:8
 ```
@@ -111,19 +146,17 @@ docker logs odmopa-mysql-db
 
 **Postgres**
 ```bash
-docker logs odmopa-mysql-db
+docker logs odmopa-postgres-db
 ```
 ### Build image
 Build the Docker image of the application and run it.
 
-*Before executing the following commands:
-* change properly the value of arguments `DATABASE_USERNAME`, `DATABASE_PASSWORD` and `DATABASE_URL`. Reported commands already contains right argument values if you have created the database using the commands above.
-* remove the option `-f Dockerfile.local` if you want to build the application from code taken from repository*
+*Before executing the following commands change properly the value of arguments `DATABASE_USERNAME`, `DATABASE_PASSWORD` and `DATABASE_URL`. Reported commands already contains right argument values if you have created the database using the commands above.
 
 **MySql**
 ```bash
-docker build -t odmopa-mysql-app . -f Dockerfile.local \
-   --build-arg DATABASE_URL=jdbc:mysql://localhost:3306/odmopadb \
+docker build -t odmopa-mysql-app . -f Dockerfile \
+   --build-arg DATABASE_URL=jdbc:mysql://localhost:3306/ODMPOLICY \
    --build-arg DATABASE_USERNAME=root \
    --build-arg DATABASE_PASSWORD=root \
    --build-arg FLYWAY_SCRIPTS_DIR=mysql
@@ -131,11 +164,11 @@ docker build -t odmopa-mysql-app . -f Dockerfile.local \
 
 **Postgres**
 ```bash
-docker build -t odmopa-postgres-app . -f Dockerfile.local \
+docker build -t odmopa-postgres-app . -f Dockerfile \
    --build-arg DATABASE_URL=jdbc:postgresql://localhost:5432/odmopadb \
    --build-arg DATABASE_USERNAME=postgres \
    --build-arg DATABASE_PASSWORD=postgres \
-   --build-arg FLYWAY_SCRIPTS_DIR=postgres
+   --build-arg FLYWAY_SCRIPTS_DIR=postgresql
 ```
 
 ### Run application
@@ -150,13 +183,14 @@ docker run --name odmopa-mysql-app -p 4242:4242 --net host odmopa-mysql-app
 
 **Postgres**
 ```bash
-docker run --name ododmopa-postgres-appmp -p 4242:4242 --net host odmopa-postgres-app
+docker run --name ododmopa-postgres-app -p 4242:4242 --net host odmopa-postgres-app
 ```
 
 ### Stop application
 
 *Before executing the following commands:
-* change the instance name to `odmopa-postgres-app` if you are using postgres and not mysql *
+* change the DB name to `odmopa-postgres-db` if you are using postgres and not mysql
+* change the instance name to `odmopa-postgres-app` if you are using postgres and not mysql
 
 ```bash
 docker stop odmopa-mysql-app
@@ -181,12 +215,34 @@ docker rm odmopa-opa-server
 
 ## Run with Docker Compose
 
+### Clone dependencies repository
+Clone the repository and move to the project root folder
+
+```bash
+git git clone https://github.com/opendatamesh-initiative/odm-platform.git
+cd odm-platform-pp-services
+```
+
+### Compile dependencies
+Compile the project:
+
+```bash
+mvn clean install -DskipTests
+```
+
 ### Clone repository
 Clone the repository and move it to the project root folder
 
 ```bash
-git git clone git@bitbucket.org:quantyca/odm-plane-utility-policyservice-opa.git
-cd odm-plane-utility-policyservice-opa
+git git clone https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-opa.git
+cd odm-platform-up-services-policy-opa
+```
+
+### Compile project
+You need to first execute the build locally by running the following command:
+
+```bash
+mvn clean package -DskipTests
 ```
 
 ### Build image
@@ -195,11 +251,8 @@ Build the docker-compose images of the application, a default OPA server and a d
 Before building it, create a `.env` file in the root directory of the project similar to the following one:
 ```.dotenv
 OPA_PORT=8181
-OPA_LOG_LEVEL=debug
-JAVA_OPTS=
-SPRING_PROFILES_ACTIVE=docker
-SPRING_PORT=4242
 DATABASE_PORT=5433
+SPRING_PORT=4242
 DATABASE_NAME=mydb
 DATABASE_USERNAME=usr
 DATABASE_PASSWORD=pwd
