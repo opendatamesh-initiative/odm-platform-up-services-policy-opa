@@ -67,21 +67,7 @@ java -jar opa-policy-server/target/odm-platform-up-services-policy-opa-0.0.1-SNA
 *Note: The application need a reachable OPA server listening on port 8181 to correctly work*
 
 ## Run with Docker
-
-### Clone dependencies repository
-Clone the repository and move to the project root folder
-
-```bash
-git git clone https://github.com/opendatamesh-initiative/odm-platform.git
-cd odm-platform-pp-services
-```
-
-### Compile dependencies
-Compile the project:
-
-```bash
-mvn clean install -DskipTests
-```
+*Dependencies must have been compiled to run this project.
 
 ### Clone repository
 Clone the repository and move it to the project root folder
@@ -214,21 +200,7 @@ docker rm odmopa-opa-server
 ```
 
 ## Run with Docker Compose
-
-### Clone dependencies repository
-Clone the repository and move to the project root folder
-
-```bash
-git git clone https://github.com/opendatamesh-initiative/odm-platform.git
-cd odm-platform-pp-services
-```
-
-### Compile dependencies
-Compile the project:
-
-```bash
-mvn clean install -DskipTests
-```
+*Dependencies must have been compiled to run this project.
 
 ### Clone repository
 Clone the repository and move it to the project root folder
