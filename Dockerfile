@@ -1,5 +1,7 @@
 FROM openjdk:17-alpine
+
 VOLUME /tmp
+
 ADD opa-client/target/odm-platform-up-policy-opa-client-*.jar ./
 COPY opa-policy-server/target/odm-platform-up-policy-opa-server-*.jar ./application.jar
 
@@ -28,4 +30,5 @@ ENV SPRING_PORT ${SPRING_PORT}
 ENV SPRING_PROPS ${SPRING_PROPS}
 
 EXPOSE $SPRING_PORT
+
 ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS  -Dspring.profiles.active=$SPRING_PROFILES_ACTIVE $SPRING_PROPS -jar ./application.jar" ]
