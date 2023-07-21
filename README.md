@@ -32,7 +32,7 @@ mvn clean install -DskipTests
 ```
 
 ## Run locally
-*Dependencies must have been compiled to run this project.
+*_Dependencies must have been compiled to run this project._
 
 ### Clone repository
 Clone the repository and move to the project root folder
@@ -46,7 +46,7 @@ cd odm-platform-up-services-policy-opa
 Compile the project:
 
 ```bash
-mvn clean package -DskipTests
+mvn clean package spring-boot:repackage -DskipTests
 ```
 
 ### Run application
@@ -67,7 +67,7 @@ java -jar opa-policy-server/target/odm-platform-up-services-policy-opa-0.0.1-SNA
 *Note: The application need a reachable OPA server listening on port 8181 to correctly work*
 
 ## Run with Docker
-*Dependencies must have been compiled to run this project.
+*_Dependencies must have been compiled to run this project._
 
 ### Clone repository
 Clone the repository and move it to the project root folder
@@ -83,7 +83,7 @@ Here you can find the Dockerfile which creates an image containing the applicati
 You need to first execute the build locally by running the following command:
 
 ```bash
-mvn clean package -DskipTests
+mvn clean package spring-boot:repackage -DskipTests
 ```
 
 ### Run OPA server
@@ -200,7 +200,7 @@ docker rm odmopa-opa-server
 ```
 
 ## Run with Docker Compose
-*Dependencies must have been compiled to run this project.
+*_Dependencies must have been compiled to run this project._
 
 ### Clone repository
 Clone the repository and move it to the project root folder
@@ -214,7 +214,7 @@ cd odm-platform-up-services-policy-opa
 You need to first execute the build locally by running the following command:
 
 ```bash
-mvn clean package -DskipTests
+mvn clean package spring-boot:repackage -DskipTests
 ```
 
 ### Build image
