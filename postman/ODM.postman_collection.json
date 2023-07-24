@@ -21,12 +21,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:4242/api/v1/planes/utility/policy-services/opa/policies/:id",
+					"raw": "http://localhost:9001/api/v1/planes/utility/policy-services/opa/policies/:id",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "4242",
+					"port": "9001",
 					"path": [
 						"api",
 						"v1",
@@ -62,12 +62,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:4242/api/v1/planes/utility/policy-services/opa/policies/",
+					"raw": "http://localhost:9001/api/v1/planes/utility/policy-services/opa/policies/",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "4242",
+					"port": "9001",
 					"path": [
 						"api",
 						"v1",
@@ -97,12 +97,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:4242/api/v1/planes/utility/policy-services/opa/policies/",
+					"raw": "http://localhost:9001/api/v1/planes/utility/policy-services/opa/policies/",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "4242",
+					"port": "9001",
 					"path": [
 						"api",
 						"v1",
@@ -135,12 +135,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:4242/api/v1/planes/utility/policy-services/opa/policies",
+					"raw": "http://localhost:9001/api/v1/planes/utility/policy-services/opa/policies",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "4242",
+					"port": "9001",
 					"path": [
 						"api",
 						"v1",
@@ -169,12 +169,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:4242/api/v1/planes/utility/policy-services/opa/policies/:id",
+					"raw": "http://localhost:9001/api/v1/planes/utility/policy-services/opa/policies/:id",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "4242",
+					"port": "9001",
 					"path": [
 						"api",
 						"v1",
@@ -210,12 +210,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:4242/api/v1/planes/utility/policy-services/opa/validate?suite=uuu,odm-suite",
+					"raw": "http://localhost:9001/api/v1/planes/utility/policy-services/opa/validate?suite=uuu,odm-suite",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "4242",
+					"port": "9001",
 					"path": [
 						"api",
 						"v1",
@@ -250,12 +250,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:4242/api/v1/planes/utility/policy-services/opa/validate?id=dataproduct,xpolicy",
+					"raw": "http://localhost:9001/api/v1/planes/utility/policy-services/opa/validate?id=dataproduct,xpolicy",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "4242",
+					"port": "9001",
 					"path": [
 						"api",
 						"v1",
@@ -290,12 +290,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:4242/api/v1/planes/utility/policy-services/opa/validate",
+					"raw": "http://localhost:9001/api/v1/planes/utility/policy-services/opa/validate",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "4242",
+					"port": "9001",
 					"path": [
 						"api",
 						"v1",
@@ -315,12 +315,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:4242/api/v1/planes/utility/policy-services/opa/suites",
+					"raw": "http://localhost:9001/api/v1/planes/utility/policy-services/opa/suites",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "4242",
+					"port": "9001",
 					"path": [
 						"api",
 						"v1",
@@ -340,12 +340,12 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:4242/api/v1/planes/utility/policy-services/opa/suites/:id",
+					"raw": "http://localhost:9001/api/v1/planes/utility/policy-services/opa/suites/:id",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "4242",
+					"port": "9001",
 					"path": [
 						"api",
 						"v1",
@@ -372,12 +372,12 @@
 				"method": "PATCH",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:4242/api/v1/planes/utility/policy-services/opa/suites/:id?mode=ADD&policyId=xpolicy",
+					"raw": "http://localhost:9001/api/v1/planes/utility/policy-services/opa/suites/:id?mode=ADD&policyId=xpolicy",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "4242",
+					"port": "9001",
 					"path": [
 						"api",
 						"v1",
@@ -424,12 +424,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:4242/api/v1/planes/utility/policy-services/opa/suites/",
+					"raw": "http://localhost:9001/api/v1/planes/utility/policy-services/opa/suites/",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "4242",
+					"port": "9001",
 					"path": [
 						"api",
 						"v1",

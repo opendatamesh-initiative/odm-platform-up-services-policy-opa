@@ -164,12 +164,12 @@ Run the Docker image.
 
 **MySql**
 ```bash
-docker run --name odmopa-mysql-app -p 4242:4242 --net host odmopa-mysql-app
+docker run --name odmopa-mysql-app -p 9001:9001 --net host odmopa-mysql-app
 ```
 
 **Postgres**
 ```bash
-docker run --name odmopa-postgres-app -p 4242:4242 --net host odmopa-postgres-app
+docker run --name odmopa-postgres-app -p 9001:9001 --net host odmopa-postgres-app
 ```
 
 ### Stop application
@@ -224,7 +224,7 @@ Before building it, create a `.env` file in the root directory of the project si
 ```.dotenv
 OPA_PORT=8181
 DATABASE_PORT=5433
-SPRING_PORT=4242
+SPRING_PORT=9001
 DATABASE_NAME=mydb
 DATABASE_USERNAME=usr
 DATABASE_PASSWORD=pwd
@@ -263,7 +263,7 @@ docker-compose build --no-cache
 
 You can invoke REST endpoints through *OpenAPI UI* available at the following url:
 
-* [http://localhost:4242/api/v1/planes/utility/policy-services/opa/swagger-ui/index.html](http://localhost:4242/api/v1/planes/utility/policy-services/opa/swagger-ui/index.html)
+* [http://localhost:9001/api/v1/planes/utility/policy-services/opa/swagger-ui/index.html](http://localhost:9001/api/v1/planes/utility/policy-services/opa/swagger-ui/index.html)
 
 ## OPA server
 
@@ -275,6 +275,6 @@ You can access to OPA Server browsing tho the following page:
 
 If the application is running using an in memory instance of H2 database you can check the database content through H2 Web Console available at the following url:
 
-* [http://localhost:4242/api/v1/planes/utility/policy-services/opa//h2-console](http://localhost:4242/api/v1/planes/utility/policy-services/opa/h2-console)
+* [http://localhost:9001/api/v1/planes/utility/policy-services/opa//h2-console](http://localhost:9001/api/v1/planes/utility/policy-services/opa/h2-console)
 
 In all cases you can also use your favourite sql client providing the proper connection parameters
