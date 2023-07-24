@@ -26,6 +26,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,6 +46,10 @@ public abstract class PolicyserviceOpaApplicationIT {
 	protected PolicyServiceClient client;
 
 	protected ResourceBuilder resourceBuilder;
+
+	protected final String DB_TABLES_POSTGRESQL = "src/test/resources/db/tables_postgresql.txt";
+
+	protected final String DB_TABLES_MYSQL = "src/test/resources/db/tables_mysql.txt";
 
 	protected final String POLICY_1 = "src/test/resources/policies/policy1.json";
 
@@ -89,20 +95,21 @@ public abstract class PolicyserviceOpaApplicationIT {
 	}
 
 	@BeforeEach
-	public void cleanDbState(@Autowired JdbcTemplate jdbcTemplate, @Autowired Environment environment) {
-		if(Arrays.stream(environment.getActiveProfiles()).findFirst().get().equals("testpostgresql")) {
+	public void cleanDbState(@Autowired JdbcTemplate jdbcTemplate, @Autowired Environment environment) throws IOException {
+		String activeProfile = Arrays.stream(environment.getActiveProfiles()).findFirst().get();
+		String[] tableSet;
+		if(activeProfile.equals("testpostgresql")) {
+			tableSet = Files.readAllLines(new File(DB_TABLES_POSTGRESQL).toPath(), Charset.defaultCharset()).toArray(new String[0]);
+			System.out.println(tableSet);
 			JdbcTestUtils.deleteFromTables(
 					jdbcTemplate,
-					"\"ODMPOLICY\".\"POLICY\"",
-					"\"ODMPOLICY\".\"SUITE\"",
-					"\"ODMPOLICY\".\"SuiteEntity_policies\""
+					tableSet
 			);
-		} else if (Arrays.stream(environment.getActiveProfiles()).findFirst().get().equals("testmysql")) {
+		} else if (activeProfile.equals("testmysql")) {
+			tableSet = Files.readAllLines(new File(DB_TABLES_MYSQL).toPath(), Charset.defaultCharset()).toArray(new String[0]);
 			JdbcTestUtils.deleteFromTables(
 					jdbcTemplate,
-					"ODMPOLICY.POLICY",
-					"ODMPOLICY.SUITE",
-					"ODMPOLICY.SUITEENTITY_POLICIES"
+					tableSet
 			);
 		}
 	}
