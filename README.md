@@ -169,7 +169,7 @@ docker run --name odmopa-mysql-app -p 4242:4242 --net host odmopa-mysql-app
 
 **Postgres**
 ```bash
-docker run --name ododmopa-postgres-app -p 4242:4242 --net host odmopa-postgres-app
+docker run --name odmopa-postgres-app -p 4242:4242 --net host odmopa-postgres-app
 ```
 
 ### Stop application

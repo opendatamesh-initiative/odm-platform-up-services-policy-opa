@@ -30,15 +30,14 @@ services:
     command:
       - "run"
       - "--server"
-      - "--log-level=${OPA_LOG_LEVEL}"
+      - "--log-level=debug"
       - "--log-format=json-pretty"
       - "--set=decision_logs.console=true"
     volumes:
       - opa:/var/lib/opa/data:rw
 
   # Spring boot app
-  app:
-    container_name: "${APP_NAME}"
+  policyservice:
     depends_on:
       - opa
       - PostgreSQL
