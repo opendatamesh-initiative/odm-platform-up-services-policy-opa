@@ -1,0 +1,5 @@
+{
+  "displayName": "Dataproduct policies",
+  "description": "Set of policies for the package dataproduct",
+  "rawPolicy": "package dataproduct\n\ndefault allow := false\n\nallow := true {                                     \n    startswith(input.info.fullyQualifiedName, \"urn\")\n}"
+}
