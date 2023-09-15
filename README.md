@@ -1,5 +1,7 @@
 # Open Data Mesh Plane Utility Policyservice OPA
 
+[![Build](https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-opa/workflows/odm-platform-up-services-policy-opa%20CI/badge.svg)](https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-opa/actions) [![Release](https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-opa/workflows/odm-platform-up-services-policy-opa%20CI%2FCD/badge.svg)](https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-opa/actions)
+
 Open Data Mesh Platform is a platform that manages the full lifecycle of a data product from deployment to retirement. It use the [Data Product Descriptor Specification](https://dpds.opendatamesh.org/) to to create, deploy and operate data product containers in a mesh architecture. This repository contains the services exposed by the utility policyservice plane.
 
 *_This project have dependencies from the project [odm-platform](https://github.com/opendatamesh-initiative/odm-platform)_
