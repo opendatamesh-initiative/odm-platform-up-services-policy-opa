@@ -30,10 +30,10 @@ jobs:
           cd odm-platform
           mvn -B clean install -DskipTests --file pom.xml
           cd ..
+      - name: Build with Maven
+        run: mvn clean package spring-boot:repackage -DskipTests
       - name: Execute tests with Maven
         run: |
           mvn -B test -Dspring.profiles.active=dev
           mvn -B test -Dspring.profiles.active=testpostgresql
           mvn -B test -Dspring.profiles.active=testmysql
-      - name: Build with Maven
-        run: mvn clean package spring-boot:repackage -DskipTests
