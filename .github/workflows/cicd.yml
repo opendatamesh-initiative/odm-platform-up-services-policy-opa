@@ -56,7 +56,7 @@ jobs:
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
       - name: Push image to Container Registry
         run: |
-          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/odm-platform
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/odm-platform-up-services-policy-opa
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
           echo IMAGE_ID=$IMAGE_ID
           docker tag $IMAGE_NAME $IMAGE_ID:${{ env.TAG_VERSION }}
