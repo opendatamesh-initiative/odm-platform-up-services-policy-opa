@@ -36,7 +36,7 @@ License.
 	<name>OPA Policy Service</name>
 
 	<description>Implementation of policy service for OPA</description>
-	<version>1.0.1</version>
+	<version>1.0.0</version>
 	<url>https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-opa</url>
 	<packaging>pom</packaging>
 
