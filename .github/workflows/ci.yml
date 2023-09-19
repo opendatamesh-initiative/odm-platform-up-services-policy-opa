@@ -34,6 +34,13 @@ jobs:
         run: mvn clean package spring-boot:repackage -DskipTests
       - name: Execute tests with Maven
         run: |
-          mvn -B test -Dspring.profiles.active=dev
-          mvn -B test -Dspring.profiles.active=testpostgresql
-          mvn -B test -Dspring.profiles.active=testmysql
+          mvn -B test -Dspring.profiles.active=dev -Dtest=PolicyIT -DfailIfNoTests=false
+          mvn -B test -Dspring.profiles.active=dev -Dtest=SuiteIT -DfailIfNoTests=false
+          mvn -B test -Dspring.profiles.active=dev -Dtest=ValidateIT -DfailIfNoTests=false
+          mvn -B test -Dspring.profiles.active=testpostgresql -Dtest=PolicyIT -DfailIfNoTests=false
+          mvn -B test -Dspring.profiles.active=testpostgresql -Dtest=SuiteIT -DfailIfNoTests=false
+          mvn -B test -Dspring.profiles.active=testpostgresql -Dtest=ValidateIT -DfailIfNoTests=false
+          mvn -B test -Dspring.profiles.active=testmysql -Dtest=PolicyIT -DfailIfNoTests=false
+          mvn -B test -Dspring.profiles.active=testmysql -Dtest=SuiteIT -DfailIfNoTests=false
+          mvn -B test -Dspring.profiles.active=testmysql -Dtest=ValidateIT -DfailIfNoTests=false
+          
