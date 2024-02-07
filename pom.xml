@@ -67,7 +67,7 @@ License.
 		<maven.compiler.target>11</maven.compiler.target>
 		<maven.compiler.source>11</maven.compiler.source>
 		<policyservice.mainclass>
-			org.opendatamesh.policyserviceopa.server.PolicyserviceOpaApplication
+			org.opendatamesh.platform.up.policy.opa.server.PolicyserviceOpaApplication
 		</policyservice.mainclass>
 	</properties>
 
