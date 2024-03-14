@@ -30,4 +30,4 @@ NEW_NAME="${DOC_DIR}/opa-policy-server-redoc-static.html"
 cp "$REDOC_FILE" "$NEW_NAME"
 echo "Renamed and copied $REDOC_FILE to $NEW_NAME"
 
-echo "Documentation generated successfully in $OUTPUT_FILE"
+echo "Documentation generated successfully in $DOC_DIR"
