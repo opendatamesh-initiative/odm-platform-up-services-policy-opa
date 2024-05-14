@@ -2,7 +2,7 @@
 
 [![Build](https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-opa/workflows/odm-platform-up-services-policy-opa%20CI/badge.svg)](https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-opa/actions) [![Release](https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-opa/workflows/odm-platform-up-services-policy-opa%20CI%2FCD/badge.svg)](https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-opa/actions)
 
-[ :warning: 🕸 DEPRECATED 🕸 :warning: ][New version: [ODM Platform Adapter Validator OPA](https://github.com/opendatamesh-initiative/odm-platform-adapter-validator-opa)]
+> :warning: 🕸 **DEPRECATED:** This project is deprecated and replaced by  [ODM Platform Adapter Validator OPA](https://github.com/opendatamesh-initiative/odm-platform-adapter-validator-opa).
 
 Open Data Mesh Platform is a platform that manages the full lifecycle of a data product from deployment to retirement. It use the [Data Product Descriptor Specification](https://dpds.opendatamesh.org/) to to create, deploy and operate data product containers in a mesh architecture. This repository contains the services exposed by the utility policyservice plane.
 
